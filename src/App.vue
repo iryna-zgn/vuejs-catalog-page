@@ -6,16 +6,14 @@
 
 				<form class="c-form">
 					<div class="c-form__group">
-						<input type="text" v-model="search" placeholder="Search">
-					</div>
-					<div class="c-form__group">
-						<button class="c-btn">
-							<span class="c-btn__icon icon-search"></span>
-						</button>
+						<div class="c-search">
+							<input type="text" v-model="search" placeholder="Search">
+							<span class="c-search__icon icon-search"></span>
+						</div>
 					</div>
 				</form>
 
-				<div class="c-counts">
+				<div class="c-counts" v-if="likes || countBuy">
 					<div v-if="likes">
 						<span class="o-icon icon-heart"></span> {{likes}}
 					</div>
@@ -127,11 +125,6 @@
 
 	.c-header
 		padding: 30px 0
-		.l-container
-			display: flex
-			align-items: center
-			flex-wrap: wrap
-			justify-content: center
 
 	.c-main
 		padding: 50px 0
@@ -176,6 +169,7 @@
 
 	.c-counts
 		display: flex
+		justify-content: center
 		padding: 15px 20px
 		font-weight: bold
 		font-size: 20px
@@ -211,6 +205,17 @@
 		input[type="search"]::-webkit-search-cancel-button
 			display: none
 
+	.c-search
+		position: relative
+		&__icon
+			position: absolute
+			right: 10px
+			top: 50%
+			margin-top: -15px
+			font-size: 30px
+		input
+			padding-right: 50px
+
 	.c-btn
 		display: inline-block
 		vertical-align: middle
@@ -225,8 +230,6 @@
 		border-radius: 0
 		cursor: pointer
 		transition: all .2s linear
-		&__icon
-			font-size: 22px
 		&:hover
 			background-color: #fa3e2e
 			transition: none
@@ -251,6 +254,16 @@
 		.l-goods
 			&__item
 				max-width: 33.33333%
+		.c-counts
+			position: absolute
+			right: 0
+		.c-header
+			position: relative
+			.l-container
+				display: flex
+				align-items: center
+				flex-wrap: wrap
+				justify-content: center
 
 	@media only screen and (min-width: 1025px)
 		.l-goods
