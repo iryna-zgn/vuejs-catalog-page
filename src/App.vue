@@ -13,12 +13,12 @@
 					</div>
 				</form>
 
-				<div class="c-counts" v-if="likes || countBuy">
+				<div class="c-counts">
 					<div v-if="likes">
 						<span class="o-icon icon-heart"></span> {{likes}}
 					</div>
-					<div v-if="countBuy">
-						<span class="o-icon icon-cart"></span> {{countBuy}}
+					<div>
+						<span class="o-icon icon-cart"></span> {{cart.length}}
 					</div>
 				</div>
 				
@@ -30,25 +30,13 @@
 
 				<div class="l-goods">
 					<div class="l-goods__item" v-for="good in filteredGoods">
-
-						<a href="#" class="c-good-item">
-							<span class="c-good-item__img">
-								<img :src="good.image_src" alt="">
-							</span>
-							<span class="c-good-item__title">
-								<span class="u-underline">
-									{{good.title}}
-								</span>
-							</span>
-						</a>
-						<span class="c-good-item__price">
-							<span class="u-gray-bg">{{good.price}}&nbsp;грн.</span>
-						</span>
-
-						<GoodButtons 
-							@likeClick="likesCount" 
-							@buyClick="goodsCount">
-						</GoodButtons>
+						<GoodItem
+							:title='good.title'
+							:price='good.price'
+							:imageSrc='good.image_src'
+							@likeClick='likesCount' 
+							@buyClick='goodsCount'>
+						</GoodItem>
 					</div>
 				</div>
 
@@ -64,7 +52,8 @@
 				goods: [],
 				search: '',
 				likes: 0,
-				countBuy: 0
+				// countBuy: 0,
+				cart: []
 			}
 		},
 		methods: {
@@ -74,11 +63,11 @@
 				} else {
 					this.likes--
 				}
-				console.log(this.likes);
 			},
 			goodsCount() {
-				this.countBuy++;
-				console.log('+ good');
+				// this.countBuy++;
+				this.cart.push('item');
+				console.log(this.cart);
 			}
 		},
 		created() {
@@ -140,32 +129,6 @@
 			padding: 0 15px
 			margin-bottom: 50px
 			box-sizing: border-box
-
-	.c-good-item
-		display: inline-block
-		text-decoration: none 
-		color: inherit
-		font-size: 18px
-		img
-			display: block
-			max-width: 100%
-			max-height: 100%
-		&__img
-			display: block
-			height: 200px
-			margin-bottom: 10px
-		&__title
-			display: block
-			margin-bottom: 20px
-			line-height: 1.5
-		&__price
-			display: block
-			font-size: 16px
-			margin-bottom: 25px
-		&:hover
-			.u-underline
-				border-bottom-color: rgba(#000000, 1)
-				transition: none
 
 	.c-counts
 		display: flex
@@ -233,16 +196,6 @@
 		&:hover
 			background-color: #fa3e2e
 			transition: none
-
-	.u-gray-bg
-		display: inline-block
-		background: rgba(#000000, .1)
-		border-radius: 3px
-		padding: 8px 10px
-
-	.u-underline
-		border-bottom: 1px solid rgba(#000000, .3)
-		transition: all .2s linear
 
 	.o-icon
 		display: inline-block

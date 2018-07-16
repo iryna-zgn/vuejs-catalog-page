@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-import GoodButtons from './components/GoodButtons.vue'
+import GoodItem from './components/GoodItem.vue'
 
-Vue.component('GoodButtons', GoodButtons)
+Vue.component('GoodItem', GoodItem)
 
 new Vue({
 	el: '#app',
