@@ -52,7 +52,6 @@
 				goods: [],
 				search: '',
 				likes: 0,
-				// countBuy: 0,
 				cart: []
 			}
 		},
@@ -64,9 +63,8 @@
 					this.likes--
 				}
 			},
-			goodsCount() {
-				// this.countBuy++;
-				this.cart.push('item');
+			goodsCount(arg) {
+				this.cart.push(arg);
 				console.log(this.cart);
 			}
 		},
