@@ -1,82 +1,76 @@
 <template>
-	<div class="c-body">
+	<div>
+		<div class="c-body">
 		
-		<header class="c-header">
-			<div class="l-container">
+			<header class="c-header">
+				<div class="l-container">
 
-				<form class="c-form">
-					<div class="c-form__group">
-						<div class="c-search">
-							<input type="text" v-model="search" placeholder="Search">
-							<span class="c-search__icon icon-search"></span>
+					<form class="c-form">
+						<div class="c-form__group">
+							<div class="c-search">
+								<input type="text" v-model="search" placeholder="Search">
+								<span class="c-search__icon icon-search"></span>
+							</div>
+						</div>
+					</form>
+
+					<div class="c-counts" v-if="goodsCount || likes">
+						<div v-if="likes">
+							<a href="#" class="c-icon-link">
+								<span href="#" class="c-icon-link__icon icon-heart"></span> 
+								{{likes}}
+							</a>
+						</div>
+						<div v-if="goodsCount">
+							<a href="#" class="c-icon-link" 
+								@click.prevent="showModal = true">
+								<span href="#" class="c-icon-link__icon icon-cart"></span> 
+								{{goodsCount}}
+							</a>
 						</div>
 					</div>
-				</form>
-
-				<div class="c-counts">
-					<div>
-						<a href="#" class="c-icon-link">
-							<span href="#" class="c-icon-link__icon icon-heart"></span> 
-							{{likes}}
-						</a>
-					</div>
-					<div>
-						<a href="#" class="c-icon-link">
-							<span href="#" class="c-icon-link__icon icon-cart"></span> 
-							{{goodsCount}}
-						</a>
-					</div>
+					
 				</div>
-				
-			</div>
-		</header>
+			</header>
 
-		<div class="l-container">
-			<div class="">
-				<div class="c-cart" v-if="goodsCount">
+			<main class="c-main">
+				<div class="l-container">
 
-					<div>
-						<div class="c-cart-item" 
-							v-for="cartGood in cartGoods">
-							<div class="c-cart-item__const">
-								<a href="#">
-									<img :src="cartGood.image_src" alt="">
-								</a>
-							</div>
-							<div class="c-cart-item__var">
-								<div class="c-cart-item__title">
-									<a href="#" class="u-underline">{{cartGood.title}}</a>
-								</div>
-								{{cartGood.count}} <span class="u-gray">&times;</span> {{cartGood.price}} <span class="u-gray">=</span> 
-								{{cartGood.count * cartGood.price}}
-							</div>
+					<div class="l-goods">
+						<div class="l-goods__item" v-for="good in filteredGoods">
+							<GoodItem
+								:id='good.id'
+								:title='good.title'
+								:price='good.price'
+								:imageSrc='good.image_src'
+								@likeClick='likesCount' 
+								@buyClick='goodsMap'>
+							</GoodItem>
 						</div>
 					</div>
 
-					<div class="c-cart__sum">{{totalSum}}</div>
+				</div>
+			</main>
 
+		</div>
+	
+		<div class="c-modal" v-if="showModal" @keyup.esc="showModal=false">
+			<div class="c-modal__overlay" @click="showModal=false"></div>
+			<div class="c-modal__container">
+				<div class="c-modal__close" @click="showModal=false">&times;</div>	
+				<div class="c-cart" v-if="cartGoods.length">
+					<div v-for="cartGood in cartGoods">
+						<CartItem
+							:title='cartGood.title' 
+							:price='cartGood.price' 
+							:imageSrc='cartGood.image_src'
+							:count='cartGood.count'>
+						</CartItem>
+					</div>
+					<div class="c-cart__sum">{{totalSum}}&nbsp;грн.</div>
 				</div>
 			</div>
 		</div>
-
-		<main class="c-main">
-			<div class="l-container">
-
-				<div class="l-goods">
-					<div class="l-goods__item" v-for="good in filteredGoods">
-						<GoodItem
-							:id='good.id'
-							:title='good.title'
-							:price='good.price'
-							:imageSrc='good.image_src'
-							@likeClick='likesCount' 
-							@buyClick='goodsMap'>
-						</GoodItem>
-					</div>
-				</div>
-
-			</div>
-		</main>
 	</div>
 </template>
 
@@ -85,15 +79,13 @@
 		data() {
 			return {
 				goods: [],
+				cartGoods: [],
 				search: '',
 				likes: 0,
 				cartMap: new Map(),
 				goodsCount: 0,
 				totalSum: 0,
-				cartGoods: [],
-				cartGoodTitle: '',
-				cartGoodPrice: '',
-				cartGoodCount: '',
+				showModal: false
 			}
 		},
 		methods: {
@@ -110,26 +102,22 @@
 				const value = this.goods.find(obj => obj.id === key.id);
 
 				if([...m.keys()].find(k => k.id === key.id)) {
-					// console.log('find!');
 					value['count']++;
 				} else {
-					// console.log('new!');
 					m.set(id, value);
 					value['count'] = 1;
 				}
 
-				// console.log([...m.values()]);
+				const values = [...m.values()];
+				this.cartGoods = values;
 
-				this.goodsCount = [...m.values()]
+				this.goodsCount = values
 													.map(obj => obj.count)
 													.reduce((sum, e) => sum + e);
 
-				this.totalSum = [...m.values()]
+				this.totalSum = values
 												.map(obj => obj.count * obj.price)
 												.reduce((sum, e) => sum + e);
-
-				this.cartGoods = [...m.values()];
-
 			}
 		},
 		created() {
@@ -157,13 +145,21 @@
 					return good.title.toLowerCase().match(this.search);
 				});
 			}
+		},
+		mounted() {
+			document.body.addEventListener('keyup', e => {
+				if (e.keyCode === 27) {
+					this.showModal = false
+				}
+			})
 		}
 	}
 </script>
 
 <style lang="sass" scoped>
 	.c-body
-		min-height: 100vh
+		height: 100vh
+		overflow: auto
 		font-family: 'Montserrat', sans-serif
 		font-size: 16px
 		line-height: 1.3
@@ -298,44 +294,61 @@
 					color: #fa3e2e
 					transition: none
 
-	.c-cart-item
-		font-size: 0
-		&:not(:last-child)
-			margin-bottom: 20px
-		img
-			max-width: 100%
-			width: 100%
-		a
-			display: inline-block
-			text-decoration: none
-			color: inherit
-		&__const,
-		&__var
-			display: inline-block
-			vertical-align: middle
-		&__const
-			position: relative
-			width: 80px
-			margin-right: -80px
-			z-index: 1
-		&__var
-			padding-left: 90px
-			font-size: 18px
-		&__title
-			margin-bottom: 7px
-
 	.c-cart
-		max-width: 500px
 		width: 100%
 		&__sum
 			margin-top: 20px
-			padding: 10px 0
+			padding: 15px 0 10px
 			border-top: 5px solid #fa3e2e
 			font-size: 30px
 			font-weight: bold
 			text-align: right
 
-	.u-gray
-		color: rgba(#000000, .6)
+	.c-modal
+		position: fixed
+		top: 0
+		right: 0
+		bottom: 0
+		left: 0
+		text-align: center
+		overflow-y: auto
+		z-index: 100
+		&__overlay
+			position: fixed
+			top: 0
+			right: 0
+			bottom: 0
+			left: 0
+			background-color: rgba(0, 0, 0, .9)
+		&__container
+			position: relative
+			display: inline-block
+			vertical-align: middle
+			max-width: 700px
+			width: 100%
+			background-color: #ffffff
+			padding: 30px 30px 20px
+			margin: 50px auto
+			text-align: left
+		&:after
+			content: ""
+			display: inline-block
+			vertical-align: middle
+			height: 100%
+			width: .1%
+			margin-left: -.1%
+		&__close
+			position: absolute
+			left: 100%
+			bottom: 100%
+			padding: 0 5px
+			font-size: 40px
+			line-height: 1
+			color: rgba(255, 255, 255, .7)
+			transition: all .1s linear
+			cursor: pointer
+			&:hover
+				color: rgba(255, 255, 255, 1)
+				transition: none
 
 </style>
