@@ -5,8 +5,7 @@
 				<img :src="imageSrc" alt="">
 			</span>
 			<span class="c-good-item__title">
-				<span class="u-underline">
-					{{title}}
+				<span class="u-underline">{{title}}
 				</span>
 			</span>
 		</a>
@@ -27,7 +26,7 @@
 				<a
 					href="#" 
 					class="c-btn" 
-					@click.prevent="$emit('buyClick', {price, title, imageSrc})">
+					@click.prevent="$emit('buyClick', {id})">
 					Buy
 				</a>
 			</li>
@@ -37,7 +36,7 @@
 
 <script>
 	export default {
-		props: ['title', 'price', 'imageSrc'],
+		props: ['id', 'title', 'price', 'imageSrc'],
 		data() {
 			return {
 				like: false,

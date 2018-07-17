@@ -14,11 +14,11 @@
 				</form>
 
 				<div class="c-counts">
-					<div v-if="likes">
+					<div>
 						<span class="o-icon icon-heart"></span> {{likes}}
 					</div>
 					<div>
-						<span class="o-icon icon-cart"></span> {{cart.length}}
+						<span class="o-icon icon-cart"></span> {{cart.size}}
 					</div>
 				</div>
 				
@@ -31,6 +31,7 @@
 				<div class="l-goods">
 					<div class="l-goods__item" v-for="good in filteredGoods">
 						<GoodItem
+							:id='good.id'
 							:title='good.title'
 							:price='good.price'
 							:imageSrc='good.image_src'
@@ -52,7 +53,7 @@
 				goods: [],
 				search: '',
 				likes: 0,
-				cart: []
+				cart: new Map()
 			}
 		},
 		methods: {
@@ -63,9 +64,21 @@
 					this.likes--
 				}
 			},
-			goodsCount(arg) {
-				this.cart.push(arg);
-				console.log(this.cart);
+			goodsCount(id) {
+				const m = this.cart;
+				const key = id;
+				const value = this.goods.find(obj => obj.id === key.id);
+
+				if([...m.keys()].find(k => k.id === key.id)) {
+					console.log('find!');
+					value['count']++;
+				} else {
+					console.log('new!');
+					m.set(id, value);
+					value['count'] = 1;
+				}
+
+				console.log([...m.values()]);
 			}
 		},
 		created() {
