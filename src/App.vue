@@ -14,21 +14,13 @@
 						</div>
 					</form>
 
-					<div class="c-counts">
-						<div>
-							<a href="#" class="c-icon-link">
-								<span href="#" class="c-icon-link__icon icon-heart"></span> 
-								<span v-if="likes">{{likes}}</span>
-							</a>
-						</div>
-						<div>
-							<a href="#" class="c-icon-link" 
-								@click.prevent="showModal = true">
-								<span href="#" class="c-icon-link__icon icon-cart"></span> 
-								<span v-if="goodsCount">{{goodsCount}}</span>
-							</a>
-						</div>
-					</div>
+					<Counts
+						:likes='likes'
+						:goodsCount='goodsCount'
+						@clickLikeBtn='showLikesModal'
+						@clickCartBtn='showCartModal'
+						>
+					</Counts>
 					
 				</div>
 			</header>
@@ -54,24 +46,34 @@
 
 		</div>
 	
-		<div class="c-modal" v-if="showModal">
-			<div class="c-modal__overlay" @click="showModal=false"></div>
+		<div class="c-modal" v-if="modal">
+			<div class="c-modal__overlay" 
+						@click="modal=false, showCart=false, showLikes=false"></div>
 			<div class="c-modal__container">
-				<div class="c-modal__close" title="esc" @click="showModal=false">&times;</div>	
-				<div class="c-cart" v-if="cartGoods.length">
-					<div v-for="cartGood in cartGoods">
-						<CartItem
-							:id='cartGood.id'
-							:title='cartGood.title' 
-							:price='cartGood.price' 
-							:imageSrc='cartGood.image_src'
-							:count='cartGood.count'
-							@removeClick='deleteGood'>
-						</CartItem>
+				<div class="c-modal__close" title="esc" 
+							@click="modal=false, showCart=false, showLikes=false">
+							&times;
+				</div>	
+
+				<div class="c-cart" v-if="showCart">
+					<div v-if="cartGoods.length">
+						<div v-for="cartGood in cartGoods">
+							<CartItem
+								:id='cartGood.id'
+								:title='cartGood.title' 
+								:price='cartGood.price' 
+								:imageSrc='cartGood.image_src'
+								:count='cartGood.count'
+								@removeClick='deleteGood'>
+							</CartItem>
+						</div>
+						<div class="c-cart__sum">{{totalSum}}&nbsp;грн.</div>
 					</div>
-					<div class="c-cart__sum">{{totalSum}}&nbsp;грн.</div>
+					<div class="c-message" 
+								v-if="cartGoods.length === 0">Cart is empty</div>
 				</div>
-				<div class="c-message" v-if="!cartGoods.length">Cart is empty</div>
+
+				<div class="c-message" v-if="showLikes">Wish list is empty</div>
 			</div>
 		</div>
 	</div>
@@ -88,7 +90,9 @@
 				cartMap: new Map(),
 				goodsCount: 0,
 				totalSum: 0,
-				showModal: false
+				modal: false,
+				showCart: false,
+				showLikes: false
 			}
 		},
 		methods: {
@@ -131,6 +135,14 @@
 				this.totalSum -= value['count'] * value['price'];
 				this.goodsCount -= value['count'];
 				this.cartGoods = [...m.values()];
+			},
+			showCartModal() {
+				this.showCart = true;
+				this.modal = true;
+			},
+			showLikesModal() {
+				this.showLikes = true;
+				this.modal = true;
 			}
 		},
 		created() {
@@ -162,7 +174,7 @@
 		mounted() {
 			document.body.addEventListener('keyup', e => {
 				if (e.keyCode === 27) {
-					this.showModal = false
+					this.modal = false
 				}
 			})
 		}
@@ -222,21 +234,6 @@
 			&__item
 				max-width: 20%
 
-	.c-counts
-		display: flex
-		justify-content: center
-		padding: 15px 20px
-		font-weight: bold
-		font-size: 20px
-		> div
-			&:not(:first-child)
-				margin-left: 20px
-
-	@media only screen and (min-width: 768px)
-		.c-counts
-			position: absolute
-			right: 0
-
 	.c-form
 		display: flex
 		justify-content: center
@@ -293,21 +290,6 @@
 		&:hover
 			background-color: #fa3e2e
 			transition: none
-	
-	.c-icon-link
-		text-decoration: none
-		color: inherit
-		&__icon
-			display: inline-block
-			vertical-align: middle
-			font-size: 28px
-			color: rgba(#fa3e2e, .7)
-			transition: all .2s linear
-		&:hover
-			.c-icon-link
-				&__icon
-					color: #fa3e2e
-					transition: none
 
 	.c-cart
 		width: 100%
