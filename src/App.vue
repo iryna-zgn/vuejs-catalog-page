@@ -23,13 +23,41 @@
 					<div>
 						<a href="#" class="c-icon-link">
 							<span href="#" class="c-icon-link__icon icon-cart"></span> 
-							{{goodsInCart}}
+							{{goodsCount}}
 						</a>
 					</div>
 				</div>
 				
 			</div>
 		</header>
+
+		<div class="l-container">
+			<div class="">
+				<div class="c-cart" v-if="goodsCount">
+
+					<div>
+						<div class="c-cart-item" 
+							v-for="cartGood in cartGoods">
+							<div class="c-cart-item__const">
+								<a href="#">
+									<img :src="cartGood.image_src" alt="">
+								</a>
+							</div>
+							<div class="c-cart-item__var">
+								<div class="c-cart-item__title">
+									<a href="#" class="u-underline">{{cartGood.title}}</a>
+								</div>
+								{{cartGood.count}} <span class="u-gray">&times;</span> {{cartGood.price}} <span class="u-gray">=</span> 
+								{{cartGood.count * cartGood.price}}
+							</div>
+						</div>
+					</div>
+
+					<div class="c-cart__sum">{{totalSum}}</div>
+
+				</div>
+			</div>
+		</div>
 
 		<main class="c-main">
 			<div class="l-container">
@@ -59,8 +87,13 @@
 				goods: [],
 				search: '',
 				likes: 0,
-				goodsInCart: 0,
-				cartMap: new Map()
+				cartMap: new Map(),
+				goodsCount: 0,
+				totalSum: 0,
+				cartGoods: [],
+				cartGoodTitle: '',
+				cartGoodPrice: '',
+				cartGoodCount: '',
 			}
 		},
 		methods: {
@@ -87,9 +120,16 @@
 
 				// console.log([...m.values()]);
 
-				this.goodsInCart = [...m.values()]
-														.map(obj => obj.count, 0)
-														.reduce((sum, e) => sum + e);
+				this.goodsCount = [...m.values()]
+													.map(obj => obj.count)
+													.reduce((sum, e) => sum + e);
+
+				this.totalSum = [...m.values()]
+												.map(obj => obj.count * obj.price)
+												.reduce((sum, e) => sum + e);
+
+				this.cartGoods = [...m.values()];
+
 			}
 		},
 		created() {
@@ -137,6 +177,15 @@
 	.c-header
 		padding: 30px 0
 
+	@media only screen and (min-width: 768px)
+		.c-header
+			position: relative
+			.l-container
+				display: flex
+				align-items: center
+				flex-wrap: wrap
+				justify-content: center
+
 	.c-main
 		padding: 50px 0
 
@@ -152,6 +201,16 @@
 			margin-bottom: 50px
 			box-sizing: border-box
 
+	@media only screen and (min-width: 768px)
+		.l-goods
+			&__item
+				max-width: 33.33333%
+
+	@media only screen and (min-width: 1025px)
+		.l-goods
+			&__item
+				max-width: 20%
+
 	.c-counts
 		display: flex
 		justify-content: center
@@ -161,6 +220,11 @@
 		> div
 			&:not(:first-child)
 				margin-left: 20px
+
+	@media only screen and (min-width: 768px)
+		.c-counts
+			position: absolute
+			right: 0
 
 	.c-form
 		display: flex
@@ -234,24 +298,44 @@
 					color: #fa3e2e
 					transition: none
 
-	@media only screen and (min-width: 768px)
-		.l-goods
-			&__item
-				max-width: 33.33333%
-		.c-counts
-			position: absolute
-			right: 0
-		.c-header
+	.c-cart-item
+		font-size: 0
+		&:not(:last-child)
+			margin-bottom: 20px
+		img
+			max-width: 100%
+			width: 100%
+		a
+			display: inline-block
+			text-decoration: none
+			color: inherit
+		&__const,
+		&__var
+			display: inline-block
+			vertical-align: middle
+		&__const
 			position: relative
-			.l-container
-				display: flex
-				align-items: center
-				flex-wrap: wrap
-				justify-content: center
+			width: 80px
+			margin-right: -80px
+			z-index: 1
+		&__var
+			padding-left: 90px
+			font-size: 18px
+		&__title
+			margin-bottom: 7px
 
-	@media only screen and (min-width: 1025px)
-		.l-goods
-			&__item
-				max-width: 20%
+	.c-cart
+		max-width: 500px
+		width: 100%
+		&__sum
+			margin-top: 20px
+			padding: 10px 0
+			border-top: 5px solid #fa3e2e
+			font-size: 30px
+			font-weight: bold
+			text-align: right
+
+	.u-gray
+		color: rgba(#000000, .6)
 
 </style>

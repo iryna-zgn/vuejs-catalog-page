@@ -136,5 +136,8 @@
 	.u-underline
 		border-bottom: 1px solid rgba(#000000, .3)
 		transition: all .2s linear
+		&:hover
+			border-bottom-color: rgba(#000000, 1)
+			transition: none
 
 </style>
