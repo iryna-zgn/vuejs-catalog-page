@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="l-site">
 		<div class="c-body">
 		
 			<header class="c-header">
@@ -14,18 +14,18 @@
 						</div>
 					</form>
 
-					<div class="c-counts" v-if="goodsCount || likes">
-						<div v-if="likes">
+					<div class="c-counts">
+						<div>
 							<a href="#" class="c-icon-link">
 								<span href="#" class="c-icon-link__icon icon-heart"></span> 
-								{{likes}}
+								<span v-if="likes">{{likes}}</span>
 							</a>
 						</div>
-						<div v-if="goodsCount">
+						<div>
 							<a href="#" class="c-icon-link" 
 								@click.prevent="showModal = true">
 								<span href="#" class="c-icon-link__icon icon-cart"></span> 
-								{{goodsCount}}
+								<span v-if="goodsCount">{{goodsCount}}</span>
 							</a>
 						</div>
 					</div>
@@ -54,21 +54,24 @@
 
 		</div>
 	
-		<div class="c-modal" v-if="showModal" @keyup.esc="showModal=false">
+		<div class="c-modal" v-if="showModal">
 			<div class="c-modal__overlay" @click="showModal=false"></div>
 			<div class="c-modal__container">
-				<div class="c-modal__close" @click="showModal=false">&times;</div>	
+				<div class="c-modal__close" title="esc" @click="showModal=false">&times;</div>	
 				<div class="c-cart" v-if="cartGoods.length">
 					<div v-for="cartGood in cartGoods">
 						<CartItem
+							:id='cartGood.id'
 							:title='cartGood.title' 
 							:price='cartGood.price' 
 							:imageSrc='cartGood.image_src'
-							:count='cartGood.count'>
+							:count='cartGood.count'
+							@removeClick='deleteGood'>
 						</CartItem>
 					</div>
 					<div class="c-cart__sum">{{totalSum}}&nbsp;грн.</div>
 				</div>
+				<div class="c-message" v-if="!cartGoods.length">Cart is empty</div>
 			</div>
 		</div>
 	</div>
@@ -99,12 +102,12 @@
 			goodsMap(id) {
 				const m = this.cartMap;
 				const key = id;
-				const value = this.goods.find(obj => obj.id === key.id);
+				const value = this.goods.find(obj => obj.id == key);
 
-				if([...m.keys()].find(k => k.id === key.id)) {
+				if(m.has(key)) {
 					value['count']++;
 				} else {
-					m.set(id, value);
+					m.set(key, value);
 					value['count'] = 1;
 				}
 
@@ -118,6 +121,16 @@
 				this.totalSum = values
 												.map(obj => obj.count * obj.price)
 												.reduce((sum, e) => sum + e);
+			},
+			deleteGood(id) {
+				const m = this.cartMap;
+				const key = id;
+				const value = [...m.values()].find(e => e.id === key);
+
+				m.delete(key);
+				this.totalSum -= value['count'] * value['price'];
+				this.goodsCount -= value['count'];
+				this.cartGoods = [...m.values()];
 			}
 		},
 		created() {
@@ -142,7 +155,7 @@
 		computed: {
 			filteredGoods: function() {
 				return this.goods.filter((good) => {
-					return good.title.toLowerCase().match(this.search);
+					return good.title.toLowerCase().match(this.search.toLowerCase());
 				});
 			}
 		},
@@ -157,9 +170,11 @@
 </script>
 
 <style lang="sass" scoped>
-	.c-body
+	.l-site
 		height: 100vh
 		overflow: auto
+
+	.c-body
 		font-family: 'Montserrat', sans-serif
 		font-size: 16px
 		line-height: 1.3
@@ -298,7 +313,7 @@
 		width: 100%
 		&__sum
 			margin-top: 20px
-			padding: 15px 0 10px
+			padding: 30px 0 10px
 			border-top: 5px solid #fa3e2e
 			font-size: 30px
 			font-weight: bold
@@ -310,6 +325,7 @@
 		right: 0
 		bottom: 0
 		left: 0
+		padding: 20px
 		text-align: center
 		overflow-y: auto
 		z-index: 100
@@ -320,14 +336,15 @@
 			bottom: 0
 			left: 0
 			background-color: rgba(0, 0, 0, .9)
+			cursor: zoom-out
 		&__container
 			position: relative
 			display: inline-block
 			vertical-align: middle
-			max-width: 700px
+			max-width: 550px
 			width: 100%
 			background-color: #ffffff
-			padding: 30px 20px 20px
+			padding: 30px 20px
 			margin: 50px auto
 			text-align: left
 			box-sizing: border-box
@@ -340,9 +357,8 @@
 			margin-left: -.1%
 		&__close
 			position: absolute
-			left: 100%
+			right: 0
 			bottom: 100%
-			padding: 0 5px
 			font-size: 40px
 			line-height: 1
 			color: rgba(255, 255, 255, .7)
@@ -351,5 +367,9 @@
 			&:hover
 				color: rgba(255, 255, 255, 1)
 				transition: none
+
+	.c-message
+		font-size: 20px
+		text-align: center
 
 </style>

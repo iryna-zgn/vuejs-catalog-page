@@ -26,7 +26,7 @@
 				<a
 					href="#" 
 					class="c-btn" 
-					@click.prevent="$emit('buyClick', {id})">
+					@click.prevent="$emit('buyClick', id)">
 					Buy
 				</a>
 			</li>
