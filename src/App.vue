@@ -15,10 +15,16 @@
 
 				<div class="c-counts">
 					<div>
-						<span class="o-icon icon-heart"></span> {{likes}}
+						<a href="#" class="c-icon-link">
+							<span href="#" class="c-icon-link__icon icon-heart"></span> 
+							{{likes}}
+						</a>
 					</div>
 					<div>
-						<span class="o-icon icon-cart"></span> {{cart.size}}
+						<a href="#" class="c-icon-link">
+							<span href="#" class="c-icon-link__icon icon-cart"></span> 
+							{{goodsInCart}}
+						</a>
 					</div>
 				</div>
 				
@@ -36,7 +42,7 @@
 							:price='good.price'
 							:imageSrc='good.image_src'
 							@likeClick='likesCount' 
-							@buyClick='goodsCount'>
+							@buyClick='goodsMap'>
 						</GoodItem>
 					</div>
 				</div>
@@ -53,7 +59,8 @@
 				goods: [],
 				search: '',
 				likes: 0,
-				cart: new Map()
+				goodsInCart: 0,
+				cartMap: new Map()
 			}
 		},
 		methods: {
@@ -64,21 +71,25 @@
 					this.likes--
 				}
 			},
-			goodsCount(id) {
-				const m = this.cart;
+			goodsMap(id) {
+				const m = this.cartMap;
 				const key = id;
 				const value = this.goods.find(obj => obj.id === key.id);
 
 				if([...m.keys()].find(k => k.id === key.id)) {
-					console.log('find!');
+					// console.log('find!');
 					value['count']++;
 				} else {
-					console.log('new!');
+					// console.log('new!');
 					m.set(id, value);
 					value['count'] = 1;
 				}
 
-				console.log([...m.values()]);
+				// console.log([...m.values()]);
+
+				this.goodsInCart = [...m.values()]
+														.map(obj => obj.count, 0)
+														.reduce((sum, e) => sum + e);
 			}
 		},
 		created() {
@@ -207,12 +218,21 @@
 		&:hover
 			background-color: #fa3e2e
 			transition: none
-
-	.o-icon
-		display: inline-block
-		vertical-align: middle
-		font-size: 28px
-		color: #fa3e2e
+	
+	.c-icon-link
+		text-decoration: none
+		color: inherit
+		&__icon
+			display: inline-block
+			vertical-align: middle
+			font-size: 28px
+			color: rgba(#fa3e2e, .7)
+			transition: all .2s linear
+		&:hover
+			.c-icon-link
+				&__icon
+					color: #fa3e2e
+					transition: none
 
 	@media only screen and (min-width: 768px)
 		.l-goods
