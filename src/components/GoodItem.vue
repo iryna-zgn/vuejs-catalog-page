@@ -18,7 +18,7 @@
 				<a 
 					href="#"
 					class="c-heart" 
-					@click.prevent="$emit('likeClick', like = !like)"
+					@click.prevent="$emit('likeClick', id, like = !like)"
 					:class="{'is-active': like}">
 				</a>
 			</li>

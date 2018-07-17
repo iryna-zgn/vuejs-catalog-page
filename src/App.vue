@@ -15,7 +15,7 @@
 					</form>
 
 					<Counts
-						:likes='likes'
+						:likes='likes.length'
 						:goodsCount='goodsCount'
 						@clickLikeBtn='showLikesModal'
 						@clickCartBtn='showCartModal'
@@ -35,7 +35,7 @@
 								:title='good.title'
 								:price='good.price'
 								:imageSrc='good.image_src'
-								@likeClick='likesCount' 
+								@likeClick='WishlistMap' 
 								@buyClick='goodsMap'>
 							</GoodItem>
 						</div>
@@ -73,7 +73,19 @@
 								v-if="cartGoods.length === 0">Cart is empty</div>
 				</div>
 
-				<div class="c-message" v-if="showLikes">Wish list is empty</div>
+				<div class="c-cart" v-if="showLikes">
+					<div v-if="likes.length">
+						<div v-for="like in likes">
+							<WishlistItem
+								:id='like.id'
+								:title='like.title'
+								:price='like.price'
+								:imageSrc='like.image_src'>
+							</WishlistItem>
+						</div>
+					</div>
+					<div class="c-message" v-if="likes.length === 0">Wish list is empty</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -83,25 +95,33 @@
 	export default {
 		data() {
 			return {
+				search: '',
 				goods: [],
 				cartGoods: [],
-				search: '',
-				likes: 0,
 				cartMap: new Map(),
 				goodsCount: 0,
 				totalSum: 0,
+				likes: [],
+				likesMap: new Map(),
 				modal: false,
 				showCart: false,
 				showLikes: false
 			}
 		},
 		methods: {
-			likesCount(arg) {
-				if (arg) {
-					this.likes++
+			WishlistMap(id) {
+				const m = this.likesMap;
+				const key = id;
+				const value = this.goods.find(obj => obj.id == key);
+
+				if(!m.has(key)) {
+					m.set(key, value);
 				} else {
-					this.likes--
+					m.delete(key);
 				}
+
+				const values = [...m.values()];
+				this.likes = values;
 			},
 			goodsMap(id) {
 				const m = this.cartMap;
