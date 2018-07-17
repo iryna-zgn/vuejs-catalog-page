@@ -327,9 +327,10 @@
 			max-width: 700px
 			width: 100%
 			background-color: #ffffff
-			padding: 30px 30px 20px
+			padding: 30px 20px 20px
 			margin: 50px auto
 			text-align: left
+			box-sizing: border-box
 		&:after
 			content: ""
 			display: inline-block

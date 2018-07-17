@@ -27,13 +27,11 @@
 <style lang="sass">
 	.c-cart-item
 		font-size: 0
-		&:not(:last-child)
-			margin-bottom: 20px
+		margin-bottom: 20px
 		img
 			max-width: 100%
 			width: 100%
 		a
-			display: inline-block
 			text-decoration: none
 			color: inherit
 		&__const,
@@ -46,13 +44,15 @@
 			margin-right: -120px
 			z-index: 1
 		&__var
-			padding-left: 130px
+			padding-left: 125px
 			font-size: 18px
 		&__title
 			margin-bottom: 10px
+			max-width: 500px
 			font-size: 20px
 			font-weight: bold
-			
+			line-height: 1.3
+
 	.u-gray
 		color: rgba(#000000, .6)
 </style>
