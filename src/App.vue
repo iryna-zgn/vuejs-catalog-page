@@ -35,7 +35,7 @@
 								:title='good.title'
 								:price='good.price'
 								:imageSrc='good.image_src'
-								@likeClick='WishlistMap' 
+								@likeClick='wishlistMap' 
 								@buyClick='goodsMap'>
 							</GoodItem>
 						</div>
@@ -109,7 +109,7 @@
 			}
 		},
 		methods: {
-			WishlistMap(id) {
+			wishlistMap(id) {
 				const m = this.likesMap;
 				const key = id;
 				const value = this.goods.find(obj => obj.id == key);
@@ -138,13 +138,9 @@
 				const values = [...m.values()];
 				this.cartGoods = values;
 
-				this.goodsCount = values
-													.map(obj => obj.count)
-													.reduce((sum, e) => sum + e);
+				this.goodsCount = values.reduce((sum, e) => sum + e.count, 0);
 
-				this.totalSum = values
-												.map(obj => obj.count * obj.price)
-												.reduce((sum, e) => sum + e);
+				this.totalSum = values.reduce((sum, e) => sum + e.count * e.price, 0);
 			},
 			deleteGood(id) {
 				const m = this.cartMap;
@@ -194,7 +190,9 @@
 		mounted() {
 			document.body.addEventListener('keyup', e => {
 				if (e.keyCode === 27) {
-					this.modal = false
+					this.modal = false;
+					this.showCart = false;
+					this.showLikes = false;
 				}
 			})
 		}
