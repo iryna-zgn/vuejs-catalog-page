@@ -24,6 +24,8 @@
 </script>
 
 <style lang="sass">
+	$accent-color: #fa3e2e
+	
 	.c-counts
 		display: flex
 		justify-content: center
@@ -46,11 +48,11 @@
 			display: inline-block
 			vertical-align: middle
 			font-size: 28px
-			color: rgba(#fa3e2e, .7)
+			color: rgba($accent-color, .7)
 			transition: all .2s linear
 		&:hover
 			.c-icon-link
 				&__icon
-					color: #fa3e2e
+					color: $accent-color
 					transition: none
 </style>

@@ -34,7 +34,10 @@
 								:id='good.id'
 								:title='good.title'
 								:price='good.price'
+								:oldPrice='good.old_price'
 								:imageSrc='good.image_src'
+								:top='good.top'
+								:label='good.label'
 								@likeClick='wishlistMap' 
 								@buyClick='goodsMap'>
 							</GoodItem>
@@ -178,6 +181,16 @@
 
 			loadJSON(function(response) {
 				vm.goods = JSON.parse(response);
+
+				vm.goods.sort(function (a, b) {
+					if (a.top > b.top) {
+						return -1;
+					}
+					if (a.top < b.top) {
+						return 1;
+					}
+					return 0;
+				});
 			});
 		},
 		computed: {
