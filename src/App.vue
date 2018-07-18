@@ -67,7 +67,8 @@
 								:price='cartGood.price' 
 								:imageSrc='cartGood.image_src'
 								:count='cartGood.count'
-								@removeClick='deleteGood'>
+								@removeClick='deleteGood'
+								@clickChangeCount='recalculatePrice'>
 							</CartItem>
 						</div>
 						<div class="c-cart__sum">{{totalSum}}&nbsp;грн.</div>
@@ -83,6 +84,7 @@
 								:id='like.id'
 								:title='like.title'
 								:price='like.price'
+								:oldPrice='like.old_price'
 								:imageSrc='like.image_src'>
 							</WishlistItem>
 						</div>
@@ -154,6 +156,24 @@
 				this.totalSum -= value['count'] * value['price'];
 				this.goodsCount -= value['count'];
 				this.cartGoods = [...m.values()];
+			},
+			recalculatePrice(sign, id) {
+				const m = this.cartMap;
+				const key = id;
+				const value = [...m.values()].find(e => e.id === key);
+
+				if(sign === 'minus' && value['count'] > 1) {
+					value['count']--;
+					this.goodsCount--;
+					this.totalSum -= Number(value['price']);
+				} else if(sign === 'plus') {
+					value['count']++;
+					this.goodsCount++;
+					this.totalSum += Number(value['price']);
+				}
+
+				const values = [...m.values()];
+				this.cartGoods = values;
 			},
 			showCartModal() {
 				this.showCart = true;

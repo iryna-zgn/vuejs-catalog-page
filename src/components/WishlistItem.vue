@@ -8,21 +8,26 @@
 				<span class="u-underline">{{title}}</span>
 			</span>
 		</a>
-		<span class="c-wishlist-item__price">
+		<div class="c-wishlist-item__price">
+			<span class="u-gray-bg">
 			{{price}}&nbsp;грн.
-		</span>
+			</span>
+		</div>
+		<div class="c-wishlist-item__old-price" v-if="oldPrice">
+			<span class="u-line-through">{{oldPrice}}&nbsp;грн.</span>
+		</div>
 	</div>
 </template>
 
 <script>
 	export default {
-		props: ['title', 'price', 'imageSrc', 'id']
+		props: ['title', 'price', 'oldPrice', 'imageSrc', 'id']
 	}
 </script>
 
 <style lang="sass">
 	.c-wishlist-item
-		margin-bottom: 50px
+		margin-bottom: 70px
 		text-align: center
 		img
 			display: block
@@ -33,13 +38,17 @@
 		&__img
 			display: block
 			max-width: 400px
-			margin: 0 auto 20px
+			margin: 0 auto 10px
 		&__title
 			display: block
-			margin-bottom: 10px
-			font-size: 24px
+			margin-bottom: 15px
+			font-size: 22px
 		&__price
-			font-size: 20px
+			margin-bottom: 10px
+			font-size: 18px
 			font-weight: bold
+		&__old-price
+			font-size: 16px
+
 
 </style>
