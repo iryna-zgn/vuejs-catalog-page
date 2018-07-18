@@ -39,7 +39,7 @@
 	@media only screen and (min-width: 768px)
 		.c-counts
 			position: absolute
-			right: 0
+			right: 20px
 
 	.c-icon-link
 		text-decoration: none

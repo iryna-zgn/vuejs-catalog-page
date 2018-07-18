@@ -253,8 +253,8 @@
 
 	@media only screen and (min-width: 768px)
 		.c-header
-			position: relative
 			.l-container
+				position: relative
 				display: flex
 				align-items: center
 				flex-wrap: wrap
