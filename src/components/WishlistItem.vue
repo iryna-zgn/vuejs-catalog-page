@@ -49,6 +49,4 @@
 			font-weight: bold
 		&__old-price
 			font-size: 16px
-
-
 </style>
