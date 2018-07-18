@@ -80,6 +80,9 @@
 			font-size: 16px
 			margin-bottom: 10px
 		&__label
+			position: absolute
+			top: 0
+			left: 0
 			display: inline-block
 			background-color: rgba($accent-color, .7)
 			color: #ffffff
@@ -111,6 +114,7 @@
 	.c-heart
 		display: inline-block
 		width: 33px
+		outline: none
 		&:before
 			content: $icon-heart_empty
 			display: inline-block

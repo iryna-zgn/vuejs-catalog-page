@@ -25,7 +25,7 @@
 
 <style lang="sass">
 	$accent-color: #fa3e2e
-	
+
 	.c-counts
 		display: flex
 		justify-content: center
@@ -44,6 +44,7 @@
 	.c-icon-link
 		text-decoration: none
 		color: inherit
+		outline: none
 		&__icon
 			display: inline-block
 			vertical-align: middle
