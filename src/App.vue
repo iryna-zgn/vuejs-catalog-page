@@ -115,65 +115,64 @@
 		},
 		methods: {
 			wishlistMap(id) {
-				const m = this.likesMap;
-				const key = id;
-				const value = this.goods.find(obj => obj.id == key);
+				let m = this.likesMap;
+				const item = this.goods.find(obj => obj.id === id);
 
-				if(!m.has(key)) {
-					m.set(key, value);
+				if(!m.has(id)) {
+					m.set(id, item);
 				} else {
-					m.delete(key);
+					m.delete(id);
 				}
-
-				const values = [...m.values()];
-				this.likes = values;
+				this.likes = [...m.values()];
 			},
 			goodsMap(id) {
-				const m = this.cartMap;
-				const key = id;
-				const value = this.goods.find(obj => obj.id == key);
+				let m = this.cartMap;
+				let item = this.goods.find(obj => obj.id === id);
 
-				if(m.has(key)) {
-					value['count']++;
+				if (m.has(id)) {
+					m.get(id).count++;
 				} else {
-					m.set(key, value);
-					value['count'] = 1;
+					item.count = 1;
+					m.set(id, item);
 				}
-
-				const values = [...m.values()];
-				this.cartGoods = values;
-
-				this.goodsCount = values.reduce((sum, e) => sum + e.count, 0);
-
-				this.totalSum = values.reduce((sum, e) => sum + e.count * e.price, 0);
+				this.cartGoods = [...m.values()];
+				
+				let itemsCount = 0;
+				let totalPrice = 0;
+				for (let item of m.values()){
+					itemsCount += item.count;
+					totalPrice += item.count * item.price;
+				}
+				this.goodsCount = itemsCount;
+				this.totalSum = totalPrice;
 			},
 			deleteGood(id) {
-				const m = this.cartMap;
-				const key = id;
-				const value = [...m.values()].find(e => e.id === key);
+				let m = this.cartMap;
+				let item = m.get(id);
 
-				m.delete(key);
-				this.totalSum -= value['count'] * value['price'];
-				this.goodsCount -= value['count'];
+				this.totalSum -= item.count * item.price;
+				this.goodsCount -= item.count;
+				
+				m.delete(id);
 				this.cartGoods = [...m.values()];
 			},
 			recalculatePrice(sign, id) {
-				const m = this.cartMap;
-				const key = id;
-				const value = [...m.values()].find(e => e.id === key);
+				let m = this.cartMap;
+				let item = m.get(id); 
 
-				if(sign === 'minus' && value['count'] > 1) {
-					value['count']--;
-					this.goodsCount--;
-					this.totalSum -= Number(value['price']);
-				} else if(sign === 'plus') {
-					value['count']++;
+				if (sign === 'minus') {
+					if (item.count > 1) {
+						item.count--;
+						this.goodsCount--;
+						this.totalSum -= Number(item.price);
+					} 
+				} else {
+					item.count++;
 					this.goodsCount++;
-					this.totalSum += Number(value['price']);
+					this.totalSum += Number(item.price);
 				}
 
-				const values = [...m.values()];
-				this.cartGoods = values;
+				this.cartGoods = [...m.values()];
 			},
 			showCartModal() {
 				this.showCart = true;
@@ -214,15 +213,15 @@
 			});
 		},
 		computed: {
-			filteredGoods: function() {
-				return this.goods.filter((good) => {
-					return good.title.toLowerCase().match(this.search.toLowerCase());
-				});
+			filteredGoods() {
+				return this.goods.filter( good => 
+					good.title.toLowerCase().match(this.search.toLowerCase())
+				);
 			}
 		},
 		mounted() {
 			document.body.addEventListener('keyup', e => {
-				if (e.keyCode === 27) {
+				if (e.keyCode === 27) { //'Ecs'-key code 
 					this.modal = false;
 					this.showCart = false;
 					this.showLikes = false;
