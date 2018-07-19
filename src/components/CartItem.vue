@@ -44,7 +44,7 @@
 	.c-cart-item
 		position: relative
 		font-size: 0
-		margin-bottom: 20px
+		margin-bottom: 30px
 		padding-right: 28px
 		img
 			max-width: 100%

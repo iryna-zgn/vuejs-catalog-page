@@ -161,11 +161,12 @@
 				let item = m.get(id); 
 
 				if (sign === 'minus') {
-					if (item.count > 1) {
 						item.count--;
 						this.goodsCount--;
 						this.totalSum -= Number(item.price);
-					} 
+					if (item.count === 0) {
+						this.deleteGood(id);
+					}
 				} else {
 					item.count++;
 					this.goodsCount++;
