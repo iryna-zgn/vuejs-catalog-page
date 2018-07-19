@@ -10,11 +10,11 @@
 		</a>
 		<div class="c-wishlist-item__price">
 			<span class="u-gray-bg">
-			{{price}}&nbsp;грн.
+			{{price}}&nbsp;₴
 			</span>
 		</div>
 		<div class="c-wishlist-item__old-price" v-if="oldPrice">
-			<span class="u-line-through">{{oldPrice}}&nbsp;грн.</span>
+			<span class="u-line-through">{{oldPrice}}&nbsp;₴</span>
 		</div>
 	</div>
 </template>

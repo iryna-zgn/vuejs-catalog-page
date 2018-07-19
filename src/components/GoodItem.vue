@@ -11,10 +11,10 @@
 			</span>
 		</a>
 		<span class="c-good-item__price">
-			<span class="u-gray-bg">{{price}}&nbsp;грн.</span>
+			<span class="u-gray-bg">{{price}}&nbsp;₴</span>
 		</span>
 		<span class="c-good-item__price" v-if="oldPrice">
-			<span class="u-line-through">{{oldPrice}}&nbsp;грн.</span>
+			<span class="u-line-through">{{oldPrice}}&nbsp;₴</span>
 		</span>
 
 		<ul class="c-goods-buttons">

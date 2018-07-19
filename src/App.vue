@@ -71,7 +71,7 @@
 								@clickChangeCount='recalculatePrice'>
 							</CartItem>
 						</div>
-						<div class="c-cart__sum">{{totalSum}}&nbsp;грн.</div>
+						<div class="c-cart__sum">{{totalSum}}&nbsp;₴</div>
 					</div>
 					<div class="c-message" 
 								v-if="cartGoods.length === 0">Cart is empty</div>

@@ -21,9 +21,9 @@
 			<div>
 				{{count}} 
 				<span class="u-gray">&times;</span> 
-				{{price}}&nbsp;грн.
+				{{price}}&nbsp;₴
 				<span class="u-gray">=</span> 
-				{{count * price}}&nbsp;грн.
+				{{count * price}}&nbsp;₴
 			</div>
 
 		</div>
