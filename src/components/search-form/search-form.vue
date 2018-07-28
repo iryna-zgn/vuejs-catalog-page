@@ -12,6 +12,17 @@
   </div>
 </template>
 
+<script>
+  export default {
+    data() {
+      return {
+        search: ''
+      }
+    }
+  }
+
+</script>
+
 <style lang="sass">
   @import "style"
 </style>
