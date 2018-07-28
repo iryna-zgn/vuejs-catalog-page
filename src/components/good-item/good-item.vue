@@ -40,7 +40,15 @@
 
 <script>
 	export default {
-		props: ['id', 'title', 'price', 'oldPrice', 'imageSrc', 'top', 'label'],
+		props: {
+			id : Number,
+			title: String,
+			price: [Number, String],
+			oldPrice: [Number, String],
+			imageSrc: String,
+			isTop: Boolean,
+			label: String
+		},
 		data() {
 			return {
 				like: false,

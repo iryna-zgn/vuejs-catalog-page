@@ -21,7 +21,12 @@
 
 <script>
 	export default {
-		props: ['title', 'price', 'oldPrice', 'imageSrc', 'id']
+		props: {
+			id : Number,
+			title: String,
+			price: [Number, String],
+			imageSrc: String
+		}
 	}
 </script>
 

@@ -5,17 +5,12 @@
 			<header class="c-header">
 				<div class="l-container">
 
-					<form class="c-form">
-						<div class="c-form__group">
-							<div class="c-search">
-								<input type="text" v-model="search" placeholder="Search">
-								<span class="c-search__icon icon-search"></span>
-							</div>
-						</div>
-					</form>
+					<search-form
+						@type-search='getSearchString'>
+					</search-form>
 
 					<counts
-						:likes='likes.length'
+						:likesCount='likes.length'
 						:goodsCount='goodsCount'
 						@click-like-btn='showLikesModal'
 						@click-cart-btn='showCartModal'
@@ -30,17 +25,13 @@
 
 					<div class="l-goods">
 						<div class="l-goods__item" v-for="good in filteredGoods">
+
 							<good-item
-								:id='good.id'
-								:title='good.title'
-								:price='good.price'
-								:oldPrice='good.old_price'
-								:imageSrc='good.image_src'
-								:top='good.top'
-								:label='good.label'
+								v-bind="good"
 								@click-like='wishlistMap'
 								@click-buy='goodsMap'>
 							</good-item>
+
 						</div>
 					</div>
 
@@ -61,15 +52,13 @@
 				<div class="c-cart" v-if="showCart">
 					<div v-if="cartGoods.length">
 						<div v-for="cartGood in cartGoods">
+
 							<cart-item
-								:id='cartGood.id'
-								:title='cartGood.title'
-								:price='cartGood.price'
-								:imageSrc='cartGood.image_src'
-								:count='cartGood.count'
+								v-bind="cartGood"
 								@click-remove='deleteGood'
 								@click-change-count='recalculatePrice'>
 							</cart-item>
+
 						</div>
 						<div class="c-cart__sum">{{totalSum}}&nbsp;₴</div>
 					</div>
@@ -80,13 +69,9 @@
 				<div class="c-cart" v-if="showLikes">
 					<div v-if="likes.length">
 						<div v-for="like in likes">
-							<wishlist-item
-								:id='like.id'
-								:title='like.title'
-								:price='like.price'
-								:oldPrice='like.old_price'
-								:imageSrc='like.image_src'>
-							</wishlist-item>
+
+							<wishlist-item v-bind="like"></wishlist-item>
+
 						</div>
 					</div>
 					<div class="c-message" v-if="likes.length === 0">Wish list is empty</div>
@@ -182,6 +167,9 @@
 			showLikesModal() {
 				this.showLikes = true;
 				this.modal = true;
+			},
+			getSearchString(str) {
+				this.search = str;
 			}
 		},
 		created() {
@@ -203,10 +191,10 @@
 				vm.goods = JSON.parse(response);
 
 				vm.goods.sort(function (a, b) {
-					if (a.top > b.top) {
+					if (a.isTop > b.isTop) {
 						return -1;
 					}
-					if (a.top < b.top) {
+					if (a.isTop < b.isTop) {
 						return 1;
 					}
 					return 0;
@@ -239,8 +227,6 @@
 
 	@import "./assets/style/components/main"
 	@import "./assets/style/components/header"
-	@import "./assets/style/components/form"
-	@import "./assets/style/components/search"
 	@import "./assets/style/components/btn"
 	@import "./assets/style/components/cart"
 	@import "./assets/style/components/message"
