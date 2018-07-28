@@ -12,10 +12,10 @@
 
 			<div class="c-spinner">
 				<a href="#" class="c-spinner__btn"
-					@click.prevent="$emit('clickChangeCount', 'minus', id)">-</a>
+					@click.prevent="$emit('click-change-count', 'minus', id)">-</a>
 				<span class="c-spinner__value">{{count}}</span>
 				<a href="#" class="c-spinner__btn"
-					@click.prevent="$emit('clickChangeCount', 'plus', id)">+</a>
+					@click.prevent="$emit('click-change-count', 'plus', id)">+</a>
 			</div>
 
 			<div>
@@ -28,7 +28,7 @@
 
 		</div>
 		<div class="c-cart-item__remove"
-					@click="$emit('removeClick', id)">&times;</div>
+					@click="$emit('click-remove', id)">&times;</div>
 	</div>
 </template>
 

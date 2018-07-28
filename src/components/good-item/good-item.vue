@@ -22,7 +22,7 @@
 				<a
 					href="#"
 					class="c-heart"
-					@click.prevent="$emit('likeClick', id, like = !like)"
+					@click.prevent="$emit('click-like', id, like = !like)"
 					:class="{'is-active': like}">
 				</a>
 			</li>
@@ -30,7 +30,7 @@
 				<a
 					href="#"
 					class="c-btn"
-					@click.prevent="$emit('buyClick', id)">
+					@click.prevent="$emit('click-buy', id)">
 					Buy
 				</a>
 			</li>

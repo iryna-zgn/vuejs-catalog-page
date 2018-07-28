@@ -14,13 +14,13 @@
 						</div>
 					</form>
 
-					<Counts
+					<counts
 						:likes='likes.length'
 						:goodsCount='goodsCount'
-						@clickLikeBtn='showLikesModal'
-						@clickCartBtn='showCartModal'
+						@click-like-btn='showLikesModal'
+						@click-cart-btn='showCartModal'
 						>
-					</Counts>
+					</counts>
 
 				</div>
 			</header>
@@ -30,7 +30,7 @@
 
 					<div class="l-goods">
 						<div class="l-goods__item" v-for="good in filteredGoods">
-							<GoodItem
+							<good-item
 								:id='good.id'
 								:title='good.title'
 								:price='good.price'
@@ -38,9 +38,9 @@
 								:imageSrc='good.image_src'
 								:top='good.top'
 								:label='good.label'
-								@likeClick='wishlistMap'
-								@buyClick='goodsMap'>
-							</GoodItem>
+								@click-like='wishlistMap'
+								@click-buy='goodsMap'>
+							</good-item>
 						</div>
 					</div>
 
@@ -61,15 +61,15 @@
 				<div class="c-cart" v-if="showCart">
 					<div v-if="cartGoods.length">
 						<div v-for="cartGood in cartGoods">
-							<CartItem
+							<cart-item
 								:id='cartGood.id'
 								:title='cartGood.title'
 								:price='cartGood.price'
 								:imageSrc='cartGood.image_src'
 								:count='cartGood.count'
-								@removeClick='deleteGood'
-								@clickChangeCount='recalculatePrice'>
-							</CartItem>
+								@click-remove='deleteGood'
+								@click-change-count='recalculatePrice'>
+							</cart-item>
 						</div>
 						<div class="c-cart__sum">{{totalSum}}&nbsp;₴</div>
 					</div>
@@ -80,13 +80,13 @@
 				<div class="c-cart" v-if="showLikes">
 					<div v-if="likes.length">
 						<div v-for="like in likes">
-							<WishlistItem
+							<wishlist-item
 								:id='like.id'
 								:title='like.title'
 								:price='like.price'
 								:oldPrice='like.old_price'
 								:imageSrc='like.image_src'>
-							</WishlistItem>
+							</wishlist-item>
 						</div>
 					</div>
 					<div class="c-message" v-if="likes.length === 0">Wish list is empty</div>
