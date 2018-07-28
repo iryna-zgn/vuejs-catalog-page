@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-import Counts from './components/Counts.vue'
-import GoodItem from './components/GoodItem.vue'
-import CartItem from './components/CartItem.vue'
-import WishlistItem from './components/WishlistItem.vue'
+import Counts from './components/counts/counts.vue'
+import GoodItem from './components/good-item/good-item.vue'
+import CartItem from './components/cart-item/cart-item.vue'
+import WishlistItem from './components/wishlist-item/wishlist-item.vue'
 
 Vue.component('Counts', Counts)
 Vue.component('GoodItem', GoodItem)

@@ -1,0 +1,75 @@
+$icon-heart: "\e911"
+$icon-heart_empty: "\e913"
+$accent-color: #fa3e2e
+
+.c-good-item
+  position: relative
+  display: inline-block
+  text-decoration: none
+  color: inherit
+  font-size: 18px
+  img
+    display: block
+    max-width: 100%
+    max-height: 100%
+  &__img
+    display: block
+    height: 200px
+    margin-bottom: 10px
+  &__title
+    display: block
+    margin-bottom: 20px
+    line-height: 1.5
+    color: #000000
+  &__price
+    display: block
+    font-size: 16px
+    margin-bottom: 10px
+  &__label
+    position: absolute
+    top: 0
+    left: 0
+    display: inline-block
+    background-color: rgba($accent-color, .7)
+    color: #ffffff
+    padding: 5px 8px
+    transition: all .2s linear
+  &__link
+    text-decoration: none
+    &:hover
+      .u-underline
+        border-bottom-color: rgba(#000000, 1)
+        transition: none
+  &:hover
+    .c-good-item
+      &__label
+        background-color: $accent-color
+        transition: none
+    .c-heart
+      &:before
+        color: $accent-color
+        transition: none
+
+.c-goods-buttons
+  margin: 25px -7px 0
+  &__item
+    display: inline-block
+    vertical-align: middle
+    padding: 0 7px
+
+.c-heart
+  display: inline-block
+  width: 33px
+  outline: none
+  &:before
+    content: $icon-heart_empty
+    display: inline-block
+    vertical-align: middle
+    font-family: icomoon
+    font-size: 28px
+    color: rgba($accent-color, .5)
+    transition: all .2s linear
+  &.is-active
+    &:before
+      content: $icon-heart
+      color: $accent-color
