@@ -25,6 +25,7 @@
 			id : Number,
 			title: String,
 			price: [Number, String],
+			oldPrice: [Number, String],
 			imageSrc: String
 		}
 	}
