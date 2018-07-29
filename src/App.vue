@@ -40,44 +40,45 @@
 
 		</div>
 
-		<div class="c-modal" v-if="modal">
-			<div class="c-modal__overlay"
-						@click="modal=false, showCart=false, showLikes=false"></div>
-			<div class="c-modal__container">
-				<div class="c-modal__close" title="esc"
-							@click="modal=false, showCart=false, showLikes=false">
-							&times;
-				</div>
+		<modal v-if="showCart"
+						@closeModal="hideCartModal">
+			<div class="c-cart">
+				<div v-if="cartGoods.length">
+					<div v-for="cartGood in cartGoods">
 
-				<div class="c-cart" v-if="showCart">
-					<div v-if="cartGoods.length">
-						<div v-for="cartGood in cartGoods">
+						<cart-item
+							v-bind="cartGood"
+							@click-remove='deleteGood'
+							@click-change-count='recalculatePrice'>
+						</cart-item>
 
-							<cart-item
-								v-bind="cartGood"
-								@click-remove='deleteGood'
-								@click-change-count='recalculatePrice'>
-							</cart-item>
-
-						</div>
-						<div class="c-cart__sum">{{totalSum}}&nbsp;₴</div>
 					</div>
-					<div class="c-message"
-								v-if="cartGoods.length === 0">Cart is empty</div>
-				</div>
-
-				<div class="c-cart" v-if="showLikes">
-					<div v-if="likes.length">
-						<div v-for="like in likes">
-
-							<wishlist-item v-bind="like"></wishlist-item>
-
-						</div>
+					<div class="c-cart__sum">
+						{{totalSum}}&nbsp;₴
 					</div>
-					<div class="c-message" v-if="likes.length === 0">Wish list is empty</div>
+				</div>
+				<div class="c-message"
+							v-if="cartGoods.length === 0">
+							Cart is empty
 				</div>
 			</div>
-		</div>
+		</modal>
+
+		<modal v-if="showLikes"
+						@closeModal="hideLikesModal">
+			<div v-if="likes.length">
+				<div v-for="like in likes">
+
+					<wishlist-item v-bind="like"></wishlist-item>
+
+				</div>
+			</div>
+			<div class="c-message"
+						v-if="likes.length === 0">
+						Wish list is empty
+			</div>
+		</modal>
+
 	</div>
 </template>
 
@@ -93,7 +94,6 @@
 				totalSum: 0,
 				likes: [],
 				likesMap: new Map(),
-				modal: false,
 				showCart: false,
 				showLikes: false
 			}
@@ -162,11 +162,15 @@
 			},
 			showCartModal() {
 				this.showCart = true;
-				this.modal = true;
+			},
+			hideCartModal() {
+				this.showCart = false;
 			},
 			showLikesModal() {
 				this.showLikes = true;
-				this.modal = true;
+			},
+			hideLikesModal() {
+				this.showLikes = false;
 			},
 			getSearchString(str) {
 				this.search = str;
@@ -207,15 +211,6 @@
 					good.title.toLowerCase().match(this.search.toLowerCase())
 				);
 			}
-		},
-		mounted() {
-			document.body.addEventListener('keyup', e => {
-				if (e.keyCode === 27) { //'Ecs'-key code
-					this.modal = false;
-					this.showCart = false;
-					this.showLikes = false;
-				}
-			})
 		}
 	}
 </script>
