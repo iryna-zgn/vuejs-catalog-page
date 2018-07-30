@@ -1,29 +1,32 @@
 <template>
-  <span class="c-icon">
+  <span
+    class="c-icon">
     <span
       v-if="iconHeart"
-      class="icon-heart"></span>
+      class="icon-heart"
+    />
     <span
       v-if="iconCart"
-      class="icon-cart"></span>
+      class="icon-cart"
+    />
   </span>
 </template>
 
 <script>
-  export default {
-    props: {
-      iconHeart: {
-        type: Boolean,
-        default: false
-      },
-      iconCart: {
-        type: Boolean,
-        default: false
-      }
+export default {
+  props: {
+    iconHeart: {
+      type: Boolean,
+      default: false
+    },
+    iconCart: {
+      type: Boolean,
+      default: false
     }
   }
+}
 </script>
 
 <style lang="sass">
-	@import "style"
+@import "style"
 </style>

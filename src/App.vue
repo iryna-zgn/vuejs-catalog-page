@@ -1,229 +1,252 @@
 <template>
-	<div class="l-site">
-		<div class="c-body">
+  <div
+    class="l-site">
+    <div
+      class="c-body">
 
-			<header class="c-header">
-				<div class="l-container">
+      <header
+        class="c-header">
+        <div
+          class="l-container">
 
-					<search-form
-						@type-search='getSearchString'>
-					</search-form>
+          <search-form
+            @type-search="getSearchString"
+          />
 
-					<counts
-						:likesCount='likes.length'
-						:goodsCount='goodsCount'
-						@click-like-btn='showLikesModal'
-						@click-cart-btn='showCartModal'
-						>
-					</counts>
+          <counts
+            :likes-count="likes.length"
+            :goods-count="goodsCount"
+            @click-like-btn="showLikesModal"
+            @click-cart-btn="showCartModal"
+          />
 
-				</div>
-			</header>
+        </div>
+      </header>
 
-			<main class="l-main">
-				<div class="l-container">
+      <main
+        class="l-main">
+        <div
+          class="l-container">
 
-					<div class="l-goods">
-						<div class="l-goods__item" v-for="good in filteredGoods">
+          <div
+            class="l-goods">
+            <div
+              v-for="good in filteredGoods"
+              :key="good.id"
+              class="l-goods__item" >
 
-							<good-item
-								v-bind="good"
-								@click-like='wishlistMap'
-								@click-buy='goodsMap'>
-							</good-item>
+              <good-item
+                v-bind="good"
+                @click-like="wishlistMap"
+                @click-buy="goodsMap"
+              />
 
-						</div>
-					</div>
+            </div>
+          </div>
 
-				</div>
-			</main>
+        </div>
+      </main>
 
-		</div>
+    </div>
 
-		<modal v-if="showCart"
-						@closeModal="hideCartModal">
-			<div class="c-cart">
-				<div v-if="cartGoods.length">
-					<div v-for="cartGood in cartGoods">
+    <modal
+      v-if="showCart"
+      @closeModal="hideCartModal">
+      <div
+        class="c-cart">
+        <div
+          v-if="cartGoods.length">
+          <div
+            v-for="cartGood in cartGoods"
+            :key="cartGood.id">
 
-						<cart-item
-							v-bind="cartGood"
-							@click-remove='deleteGood'
-							@click-change-count='recalculatePrice'>
-						</cart-item>
+            <cart-item
+              v-bind="cartGood"
+              @click-remove="deleteGood"
+              @click-change-count="recalculatePrice"
+            />
 
-					</div>
-					<div class="c-cart__sum">
-						{{totalSum}}&nbsp;₴
-					</div>
-				</div>
-				<div class="c-message"
-							v-if="cartGoods.length === 0">
-							Cart is empty
-				</div>
-			</div>
-		</modal>
+          </div>
+          <div
+            class="c-cart__sum">
+            {{ totalSum }}&nbsp;₴
+          </div>
+        </div>
+        <div
+          v-if="cartGoods.length === 0"
+          class="c-message">
+          Cart is empty
+        </div>
+      </div>
+    </modal>
 
-		<modal v-if="showLikes"
-						@closeModal="hideLikesModal">
-			<div v-if="likes.length">
-				<div v-for="like in likes">
+    <modal
+      v-if="showLikes"
+      @closeModal="hideLikesModal">
+      <div
+        v-if="likes.length">
+        <div
+          v-for="like in likes"
+          :key="like.id">
 
-					<wishlist-item v-bind="like"></wishlist-item>
+          <wishlist-item
+            v-bind="like"
+          />
 
-				</div>
-			</div>
-			<div class="c-message"
-						v-if="likes.length === 0">
-						Wish list is empty
-			</div>
-		</modal>
+        </div>
+      </div>
+      <div
+        v-if="likes.length === 0"
+        class="c-message">
+        Wish list is empty
+      </div>
+    </modal>
 
-	</div>
+  </div>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				search: '',
-				goods: [],
-				cartGoods: [],
-				cartMap: new Map(),
-				goodsCount: 0,
-				totalSum: 0,
-				likes: [],
-				likesMap: new Map(),
-				showCart: false,
-				showLikes: false
-			}
-		},
-		methods: {
-			wishlistMap(id) {
-				let m = this.likesMap;
-				const item = this.goods.find(obj => obj.id === id);
+export default {
+  data () {
+    return {
+      search: '',
+      goods: [],
+      cartGoods: [],
+      cartMap: new Map(),
+      goodsCount: 0,
+      totalSum: 0,
+      likes: [],
+      likesMap: new Map(),
+      showCart: false,
+      showLikes: false
+    }
+  },
+  computed: {
+    filteredGoods () {
+      return this.goods.filter(good =>
+        good.title.toLowerCase().match(this.search.toLowerCase())
+      )
+    }
+  },
+  created () {
+    const vm = this
 
-				if(!m.has(id)) {
-					m.set(id, item);
-				} else {
-					m.delete(id);
-				}
-				this.likes = [...m.values()];
-			},
-			goodsMap(id) {
-				let m = this.cartMap;
-				let item = this.goods.find(obj => obj.id === id);
+    function loadJSON (callback) {
+      const xobj = new XMLHttpRequest()
+      xobj.overrideMimeType('application/json')
+      xobj.open('GET', 'src/goods.json', true)
+      xobj.onreadystatechange = function () {
+        if (xobj.readyState == 4 && xobj.status == '200') {
+          callback(xobj.responseText)
+        }
+      }
+      xobj.send(null)
+    }
 
-				if (m.has(id)) {
-					m.get(id).count++;
-				} else {
-					item.count = 1;
-					m.set(id, item);
-				}
-				this.cartGoods = [...m.values()];
+    loadJSON(function (response) {
+      vm.goods = JSON.parse(response)
 
-				let itemsCount = 0;
-				let totalPrice = 0;
-				for (let item of m.values()){
-					itemsCount += item.count;
-					totalPrice += item.count * item.price;
-				}
-				this.goodsCount = itemsCount;
-				this.totalSum = totalPrice;
-			},
-			deleteGood(id) {
-				let m = this.cartMap;
-				let item = m.get(id);
+      vm.goods.sort(function (a, b) {
+        if (a.isTop > b.isTop) {
+          return -1
+        }
+        if (a.isTop < b.isTop) {
+          return 1
+        }
+        return 0
+      })
+    })
+  },
+  methods: {
+    wishlistMap (id) {
+      let m = this.likesMap
+      const item = this.goods.find(obj => obj.id === id)
 
-				this.totalSum -= item.count * item.price;
-				this.goodsCount -= item.count;
+      if (!m.has(id)) {
+        m.set(id, item)
+      } else {
+        m.delete(id)
+      }
+      this.likes = [...m.values()]
+    },
+    goodsMap (id) {
+      let m = this.cartMap
+      let item = this.goods.find(obj => obj.id === id)
 
-				m.delete(id);
-				this.cartGoods = [...m.values()];
-			},
-			recalculatePrice(sign, id) {
-				let m = this.cartMap;
-				let item = m.get(id);
+      if (m.has(id)) {
+        m.get(id).count++
+      } else {
+        item.count = 1
+        m.set(id, item)
+      }
+      this.cartGoods = [...m.values()]
 
-				if (sign === 'minus') {
-						item.count--;
-						this.goodsCount--;
-						this.totalSum -= Number(item.price);
-					if (item.count === 0) {
-						this.deleteGood(id);
-					}
-				} else {
-					item.count++;
-					this.goodsCount++;
-					this.totalSum += Number(item.price);
-				}
+      let itemsCount = 0
+      let totalPrice = 0
+      for (let item of m.values()) {
+        itemsCount += item.count
+        totalPrice += item.count * item.price
+      }
+      this.goodsCount = itemsCount
+      this.totalSum = totalPrice
+    },
+    deleteGood (id) {
+      let m = this.cartMap
+      let item = m.get(id)
 
-				this.cartGoods = [...m.values()];
-			},
-			showCartModal() {
-				this.showCart = true;
-			},
-			hideCartModal() {
-				this.showCart = false;
-			},
-			showLikesModal() {
-				this.showLikes = true;
-			},
-			hideLikesModal() {
-				this.showLikes = false;
-			},
-			getSearchString(str) {
-				this.search = str;
-			}
-		},
-		created() {
-			const vm = this;
+      this.totalSum -= item.count * item.price
+      this.goodsCount -= item.count
 
-			function loadJSON(callback) {
-				const xobj = new XMLHttpRequest();
-				xobj.overrideMimeType('application/json');
-				xobj.open('GET', 'src/goods.json', true);
-				xobj.onreadystatechange = function () {
-					if (xobj.readyState == 4 && xobj.status == '200') {
-						callback(xobj.responseText);
-					}
-				};
-				xobj.send(null);
-			}
+      m.delete(id)
+      this.cartGoods = [...m.values()]
+    },
+    recalculatePrice (sign, id) {
+      let m = this.cartMap
+      let item = m.get(id)
 
-			loadJSON(function(response) {
-				vm.goods = JSON.parse(response);
+      if (sign === 'minus') {
+        item.count--
+        this.goodsCount--
+        this.totalSum -= Number(item.price)
+        if (item.count === 0) {
+          this.deleteGood(id)
+        }
+      } else {
+        item.count++
+        this.goodsCount++
+        this.totalSum += Number(item.price)
+      }
 
-				vm.goods.sort(function (a, b) {
-					if (a.isTop > b.isTop) {
-						return -1;
-					}
-					if (a.isTop < b.isTop) {
-						return 1;
-					}
-					return 0;
-				});
-			});
-		},
-		computed: {
-			filteredGoods() {
-				return this.goods.filter( good =>
-					good.title.toLowerCase().match(this.search.toLowerCase())
-				);
-			}
-		}
-	}
+      this.cartGoods = [...m.values()]
+    },
+    showCartModal () {
+      this.showCart = true
+    },
+    hideCartModal () {
+      this.showCart = false
+    },
+    showLikesModal () {
+      this.showLikes = true
+    },
+    hideLikesModal () {
+      this.showLikes = false
+    },
+    getSearchString (str) {
+      this.search = str
+    }
+  }
+}
 </script>
 
 <style lang="sass" scoped>
-	@import "./assets/style/layout/main"
-	@import "./assets/style/layout/container"
-	@import "./assets/style/layout/goods"
+@import "./assets/style/layout/main"
+@import "./assets/style/layout/container"
+@import "./assets/style/layout/goods"
 
-	@import "./assets/style/components/main"
-	@import "./assets/style/components/header"
-	@import "./assets/style/components/btn"
-	@import "./assets/style/components/cart"
-	@import "./assets/style/components/message"
-	@import "./assets/style/components/modal"
+@import "./assets/style/components/main"
+@import "./assets/style/components/header"
+@import "./assets/style/components/btn"
+@import "./assets/style/components/cart"
+@import "./assets/style/components/message"
+@import "./assets/style/components/modal"
 </style>

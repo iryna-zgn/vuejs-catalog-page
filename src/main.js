@@ -18,6 +18,6 @@ Vue.component('SearchForm', SearchForm)
 Vue.component('Modal', Modal)
 
 new Vue({
-	el: '#app',
-	render: h => h(App)
+  el: '#app',
+  render: h => h(App)
 })
