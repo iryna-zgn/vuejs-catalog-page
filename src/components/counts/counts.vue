@@ -27,7 +27,12 @@
 </template>
 
 <script>
+import Icon from '../../ui/icon/icon'
 export default {
+  name: 'Counts',
+  components: {
+    Icon
+  },
   props: {
     likesCount: {
       type: Number,

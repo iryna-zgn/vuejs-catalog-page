@@ -17,6 +17,13 @@
   </div>
 </template>
 
+<script>
+export default {
+    name: 'Modal'
+}
+
+</script>
+
 <style lang="sass">
 @import "style"
 </style>

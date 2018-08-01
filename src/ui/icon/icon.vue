@@ -14,6 +14,7 @@
 
 <script>
 export default {
+  name: 'Icon',
   props: {
     iconHeart: {
       type: Boolean,
