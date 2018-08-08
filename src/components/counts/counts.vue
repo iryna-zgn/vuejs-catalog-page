@@ -3,7 +3,7 @@
     class="c-counts">
     <div
       class="c-counts__item"
-      @click.prevent="$emit('click-like-btn')">
+      @click="showLikesModal">
       <icon
         :icon-heart="true"
       />
@@ -14,7 +14,7 @@
     </div>
     <div
       class="c-counts__item"
-      @click.prevent="$emit('click-cart-btn')">
+      @click="showCartModal">
       <icon
         :icon-cart="true"
       />
@@ -41,6 +41,14 @@ export default {
     goodsCount: {
       type: Number,
       default: 0
+    }
+  },
+  methods: {
+    showLikesModal () {
+      this.$store.state.modal.likesModal.isShown = true
+    },
+    showCartModal () {
+      this.$store.state.modal.cartModal.isShown = true
     }
   }
 }

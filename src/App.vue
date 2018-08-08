@@ -16,8 +16,6 @@
           <counts
             :likes-count="likes.length"
             :goods-count="goodsCount"
-            @click-like-btn="showLikesModal"
-            @click-cart-btn="showCartModal"
           />
 
         </div>
@@ -50,8 +48,8 @@
     </div>
 
     <modal
-      v-if="showCart"
-      @closeModal="hideCartModal">
+      v-if="this.$store.state.modal.cartModal.isShown"
+      state-modal-name="cartModal">
       <div
         class="c-cart">
         <div
@@ -81,8 +79,8 @@
     </modal>
 
     <modal
-      v-if="showLikes"
-      @closeModal="hideLikesModal">
+      v-if="this.$store.state.modal.likesModal.isShown"
+      state-modal-name="likesModal">
       <div
         v-if="likes.length">
         <div
@@ -117,8 +115,6 @@ export default {
       totalSum: 0,
       likes: [],
       likesMap: new Map(),
-      showCart: false,
-      showLikes: false
     }
   },
   computed: {
@@ -219,18 +215,6 @@ export default {
 
       this.cartGoods = [...m.values()]
     },
-    showCartModal () {
-      this.showCart = true
-    },
-    hideCartModal () {
-      this.showCart = false
-    },
-    showLikesModal () {
-      this.showLikes = true
-    },
-    hideLikesModal () {
-      this.showLikes = false
-    },
     getSearchString (str) {
       this.search = str
     }
@@ -248,5 +232,6 @@ export default {
 @import "./assets/style/components/btn"
 @import "./assets/style/components/cart"
 @import "./assets/style/components/message"
-@import "./assets/style/components/modal"
+
+@import "./assets/style/animation/animation"
 </style>

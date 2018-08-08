@@ -1,25 +1,40 @@
 <template>
-  <div
-    class="c-modal"
-    @keyup.esc="$emit('closeModal')">
+  <transition
+    name="fade">
     <div
-      class="c-modal__overlay"
-      @click="$emit('closeModal')"
-    />
-    <div
-      class="c-modal__container">
+      class="c-modal">
       <div
-        class="c-modal__close"
-        @click="$emit('closeModal')"
+        class="c-modal__overlay"
+        @click="closeModal"
       />
-      <slot/>
+      <div
+        class="c-modal__container">
+        <a
+          href="#"
+          class="c-modal__close"
+          @click.prevent="closeModal">
+          &times;
+        </a>
+        <slot/>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
 export default {
-    name: 'Modal'
+  name: 'Modal',
+  props: {
+    stateModalName: {
+      type: String,
+      default: 'defaultModal'
+    }
+  },
+  methods: {
+    closeModal () {
+      this.$store.state.modal[this.stateModalName].isShown = false
+    }
+  }
 }
 
 </script>

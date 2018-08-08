@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+import store from './store'
 import Counts from './components/counts/counts.vue'
 import GoodItem from './components/good-item/good-item.vue'
 import CartItem from './components/cart-item/cart-item.vue'
@@ -17,5 +18,6 @@ Vue.component('Modal', Modal)
 
 new Vue({
   el: '#app',
+  store,
   render: h => h(App)
 })
