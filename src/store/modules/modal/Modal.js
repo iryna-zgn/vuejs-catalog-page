@@ -2,7 +2,7 @@ export default {
   namespaced: true,
   state: {
     defaultModal: {
-      isShow: false
+      isShown: false
     },
     cartModal: {
       isShown: false

@@ -108,16 +108,18 @@ export default {
   data () {
     return {
       search: '',
-      goods: [],
       cartGoods: [],
       cartMap: new Map(),
-      goodsCount: 0,
-      totalSum: 0,
-      likes: [],
       likesMap: new Map(),
+      likes: [],
+      goodsCount: 0,
+      totalSum: 0
     }
   },
   computed: {
+    goods () {
+      return this.$store.state.goods.goods
+    },
     filteredGoods () {
       return this.goods.filter(good =>
         good.title.toLowerCase().match(this.search.toLowerCase())
@@ -125,33 +127,7 @@ export default {
     }
   },
   created () {
-    const vm = this
-
-    function loadJSON (callback) {
-      const xobj = new XMLHttpRequest()
-      xobj.overrideMimeType('application/json')
-      xobj.open('GET', 'src/goods.json', true)
-      xobj.onreadystatechange = function () {
-        if (xobj.readyState == 4 && xobj.status == '200') {
-          callback(xobj.responseText)
-        }
-      }
-      xobj.send(null)
-    }
-
-    loadJSON(function (response) {
-      vm.goods = JSON.parse(response)
-
-      vm.goods.sort(function (a, b) {
-        if (a.isTop > b.isTop) {
-          return -1
-        }
-        if (a.isTop < b.isTop) {
-          return 1
-        }
-        return 0
-      })
-    })
+    this.$store.dispatch('goods/loadGoods')
   },
   methods: {
     wishlistMap (id) {
