@@ -1,7 +1,9 @@
+import * as types from './mutation-types'
 export default {
   namespaced: true,
   state: {
-    goods: []
+    allGoods: [],
+    searchKeyword: ''
   },
   actions: {
     loadGoods (context, goods) {
@@ -17,19 +19,21 @@ export default {
         xobj.send(null)
       }
       loadJSON(function (response) {
-        context.commit('loadGoods', JSON.parse(response))
+        context.commit(types.LOAD_GOODS, JSON.parse(response))
       })
     }
   },
   getters: {
-    goods: state => {
-      return state.goods
+    goods (state) {
+      return state.allGoods.filter(good =>
+        good.title.toLowerCase().match(state.searchKeyword.toLowerCase())
+      )
     }
   },
   mutations: {
-    loadGoods (state, payload) {
-      state.goods = payload
-      state.goods.sort(function (a, b) {
+    [types.LOAD_GOODS] (state, arr) {
+      state.allGoods = arr
+      state.allGoods.sort(function (a, b) {
         if (a.isTop > b.isTop) {
           return -1
         }
@@ -38,6 +42,9 @@ export default {
         }
         return 0
       })
+    },
+    [types.SET_SEARCH_KEYWORD] (state, str) {
+      state.searchKeyword = str
     }
   }
 }

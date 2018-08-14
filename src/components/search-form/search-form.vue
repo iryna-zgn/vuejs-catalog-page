@@ -20,6 +20,9 @@ export default {
     return {
       search: ''
     }
+  },
+  updated () {
+    this.$store.commit('goods/SET_SEARCH_KEYWORD', this.search)
   }
 }
 </script>

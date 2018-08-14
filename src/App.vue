@@ -9,9 +9,7 @@
         <div
           class="l-container">
 
-          <search-form
-            @type-search="getSearchString"
-          />
+          <search-form/>
 
           <counts
             :likes-count="likes.length"
@@ -29,7 +27,7 @@
           <div
             class="l-goods">
             <div
-              v-for="good in filteredGoods"
+              v-for="good in goods"
               :key="good.id"
               class="l-goods__item" >
 
@@ -108,7 +106,6 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      search: '',
       cartGoods: [],
       cartMap: new Map(),
       likesMap: new Map(),
@@ -120,12 +117,7 @@ export default {
   computed: {
     ...mapGetters({
       goods: 'goods/goods'
-    }),
-    filteredGoods () {
-      return this.goods.filter(good =>
-        good.title.toLowerCase().match(this.search.toLowerCase())
-      )
-    }
+    })
   },
   created () {
     this.$store.dispatch('goods/loadGoods')
@@ -191,9 +183,6 @@ export default {
       }
 
       this.cartGoods = [...m.values()]
-    },
-    getSearchString (str) {
-      this.search = str
     }
   }
 }
