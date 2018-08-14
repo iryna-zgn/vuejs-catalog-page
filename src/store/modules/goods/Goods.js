@@ -21,6 +21,11 @@ export default {
       })
     }
   },
+  getters: {
+    goods: state => {
+      return state.goods
+    }
+  },
   mutations: {
     loadGoods (state, payload) {
       state.goods = payload

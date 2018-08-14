@@ -104,6 +104,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -117,9 +118,9 @@ export default {
     }
   },
   computed: {
-    goods () {
-      return this.$store.state.goods.goods
-    },
+    ...mapGetters({
+      goods: 'goods/goods'
+    }),
     filteredGoods () {
       return this.goods.filter(good =>
         good.title.toLowerCase().match(this.search.toLowerCase())
