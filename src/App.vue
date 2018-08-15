@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -120,9 +120,12 @@ export default {
     })
   },
   created () {
-    this.$store.dispatch('goods/loadGoods')
+    this.loadGoods()
   },
   methods: {
+    ...mapActions({
+      loadGoods: 'goods/loadGoods'
+    }),
     wishlistMap (id) {
       let m = this.likesMap
       const item = this.goods.find(obj => obj.id === id)

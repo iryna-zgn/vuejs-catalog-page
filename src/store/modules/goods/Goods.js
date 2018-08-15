@@ -6,7 +6,7 @@ export default {
     searchKeyword: ''
   },
   actions: {
-    loadGoods (context, goods) {
+    loadGoods ({commit}) {
       function loadJSON (callback) {
         const xobj = new XMLHttpRequest()
         xobj.overrideMimeType('application/json')
@@ -19,8 +19,11 @@ export default {
         xobj.send(null)
       }
       loadJSON(function (response) {
-        context.commit(types.LOAD_GOODS, JSON.parse(response))
+        commit(types.LOAD_GOODS, JSON.parse(response))
       })
+    },
+    setSearchKeyword ({commit}, str) {
+      commit(types.SET_SEARCH_KEYWORD, str)
     }
   },
   getters: {

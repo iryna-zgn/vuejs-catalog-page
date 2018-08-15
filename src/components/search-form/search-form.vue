@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'SearchForm',
   data () {
@@ -22,7 +23,12 @@ export default {
     }
   },
   updated () {
-    this.$store.commit('goods/SET_SEARCH_KEYWORD', this.search)
+    this.setSearchKeyword(this.search)
+  },
+  methods: {
+    ...mapActions({
+      setSearchKeyword: 'goods/setSearchKeyword'
+    })
   }
 }
 </script>
