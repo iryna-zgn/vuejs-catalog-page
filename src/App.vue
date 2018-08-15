@@ -32,7 +32,7 @@
               class="l-goods__item" >
 
               <good-item
-                v-bind="good"
+                :good="good"
                 @click-like="wishlistMap"
                 @click-buy="goodsMap"
               />
@@ -57,7 +57,8 @@
             :key="cartGood.id">
 
             <cart-item
-              v-bind="cartGood"
+              :good="cartGood"
+              :count="cartGood.count"
               @click-remove="deleteGood"
               @click-change-count="recalculatePrice"
             />
@@ -86,7 +87,7 @@
           :key="like.id">
 
           <wishlist-item
-            v-bind="like"
+            :good="like"
           />
 
         </div>
@@ -106,10 +107,10 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      cartGoods: [],
-      cartMap: new Map(),
       likesMap: new Map(),
       likes: [],
+      cartGoods: [],
+      cartMap: new Map(),
       goodsCount: 0,
       totalSum: 0
     }

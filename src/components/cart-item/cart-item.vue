@@ -6,7 +6,7 @@
       <a
         href="#">
         <img
-          :src="imageSrc"
+          :src="good.imageSrc"
           alt="">
       </a>
     </div>
@@ -17,7 +17,7 @@
         <a
           href="#"
           class="u-underline">
-          {{ title }}
+          {{ good.title }}
         </a>
       </div>
 
@@ -26,17 +26,17 @@
         <a
           href="#"
           class="c-spinner__btn"
-          @click.prevent="$emit('click-change-count', 'minus', id)">
+          @click.prevent="$emit('click-change-count', 'minus', good.id)">
           -
         </a>
         <span
           class="c-spinner__value">
-          {{ count }}
+          {{ good.count }}
         </span>
         <a
           href="#"
           class="c-spinner__btn"
-          @click.prevent="$emit('click-change-count', 'plus', id)">
+          @click.prevent="$emit('click-change-count', 'plus', good.id)">
           +
         </a>
       </div>
@@ -47,18 +47,18 @@
           class="u-gray">
           &times;
         </span>
-        {{ price }}&nbsp;₴
+        {{ good.price }}&nbsp;₴
         <span
           class="u-gray">
           =
         </span>
-        {{ count * price }}&nbsp;₴
+        {{ count * good.price }}&nbsp;₴
       </div>
 
     </div>
     <div
       class="c-cart-item__remove"
-      @click="$emit('click-remove', id)">
+      @click="$emit('click-remove', good.id)">
       &times;
     </div>
   </div>
@@ -68,25 +68,9 @@
 export default {
   name: 'CartItem',
   props: {
-    id: {
-      type: Number,
-      default: null
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-    price: {
-      type: [Number, String],
-      default: null
-    },
-    oldPrice: {
-      type: [Number, String],
-      default: null
-    },
-    imageSrc: {
-      type: String,
-      default: ''
+    good: {
+      type: Object,
+      default: _ => {}
     },
     count: {
       type: Number,

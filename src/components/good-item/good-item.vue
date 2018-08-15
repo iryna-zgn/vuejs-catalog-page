@@ -2,9 +2,9 @@
   <div
     class="c-good-item">
     <div
-      v-if="label"
+      v-if="good.label"
       class="c-good-item__label">
-      {{ label }}
+      {{ good.label }}
     </div>
     <a
       href="#"
@@ -12,14 +12,14 @@
       <span
         class="c-good-item__img">
         <img
-          :src="imageSrc"
+          :src="good.imageSrc"
           alt="">
       </span>
       <span
         class="c-good-item__title">
         <span
           class="u-underline">
-          {{ title }}
+          {{ good.title }}
         </span>
       </span>
     </a>
@@ -27,14 +27,14 @@
       class="c-good-item__price">
       <span
         class="u-gray-bg">
-        {{ price }}&nbsp;₴
+        {{ good.price }}&nbsp;₴
       </span>
     </span>
     <span
-      v-if="oldPrice"
+      v-if="good.oldPrice"
       class="c-good-item__price">
       <span class="u-line-through">
-        {{ oldPrice }}&nbsp;₴
+        {{ good.oldPrice }}&nbsp;₴
       </span>
     </span>
 
@@ -46,14 +46,14 @@
           :class="{'is-active': like}"
           href="#"
           class="c-heart"
-          @click.prevent="$emit('click-like', id, like = !like)"
+          @click.prevent="$emit('click-like', good.id, like = !like)"
         />
       </li>
       <li class="c-goods-buttons__item">
         <a
           href="#"
           class="c-btn"
-          @click.prevent="$emit('click-buy', id)">
+          @click.prevent="$emit('click-buy', good.id)">
           Buy
         </a>
       </li>
@@ -65,33 +65,9 @@
 export default {
   name: 'GoodItem',
   props: {
-    id: {
-      type: Number,
-      default: null
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-    price: {
-      type: [Number, String],
-      default: null
-    },
-    oldPrice: {
-      type: [Number, String],
-      default: null
-    },
-    imageSrc: {
-      type: String,
-      default: ''
-    },
-    isTop: {
-      type: Boolean,
-      default: false
-    },
-    label: {
-      type: String,
-      default: ''
+    good: {
+      type: Object,
+      default: _ => {}
     }
   },
   data () {

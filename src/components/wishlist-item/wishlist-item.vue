@@ -7,14 +7,14 @@
       <span
         class="c-wishlist-item__img">
         <img
-          :src="imageSrc"
+          :src="good.imageSrc"
           alt="">
       </span>
       <span
         class="c-wishlist-item__title">
         <span
           class="u-underline">
-          {{ title }}
+          {{ good.title }}
         </span>
       </span>
     </a>
@@ -22,15 +22,15 @@
       class="c-wishlist-item__price">
       <span
         class="u-gray-bg">
-        {{ price }}&nbsp;₴
+        {{ good.price }}&nbsp;₴
       </span>
     </div>
     <div
-      v-if="oldPrice"
+      v-if="good.oldPrice"
       class="c-wishlist-item__old-price">
       <span
         class="u-line-through">
-        {{ oldPrice }}&nbsp;₴
+        {{ good.oldPrice }}&nbsp;₴
       </span>
     </div>
   </div>
@@ -40,25 +40,9 @@
 export default {
   name: 'WishlistItem',
   props: {
-    id: {
-      type: Number,
-      default: null
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-    price: {
-      type: [Number, String],
-      default: null
-    },
-    oldPrice: {
-      type: [Number, String],
-      default: null
-    },
-    imageSrc: {
-      type: String,
-      default: ''
+    good: {
+      type: Object,
+      default: _ => {}
     }
   }
 }
