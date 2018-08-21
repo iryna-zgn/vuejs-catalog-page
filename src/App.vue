@@ -12,7 +12,6 @@
           <search-form/>
 
           <counts
-            :likes-count="likes.length"
             :goods-count="goodsCount"
           />
 
@@ -45,7 +44,7 @@
 
     </div>
 
-    <modal
+    <!-- <modal
       v-if="this.$store.state.modal.cartModal.isShown"
       state-modal-name="cartModal">
       <div
@@ -75,39 +74,28 @@
           Cart is empty
         </div>
       </div>
-    </modal>
-
-    <modal
-      v-if="this.$store.state.modal.likesModal.isShown"
-      state-modal-name="likesModal">
-      <div
-        v-if="likes.length">
-        <div
-          v-for="like in likes"
-          :key="like.id">
-
-          <wishlist-item
-            :good="like"
-          />
-
-        </div>
-      </div>
-      <div
-        v-if="likes.length === 0"
-        class="c-message">
-        Wish list is empty
-      </div>
-    </modal>
-
+    </modal> -->
+    <modals/>
   </div>
 </template>
 
 <script>
+import SearchForm from './components/search-form/search-form.vue'
+import Counts from './components/counts/counts.vue'
+import GoodItem from './components/good-item/good-item.vue'
+import Modals from './components/modals/Modals'
+import CartItem from './components/cart-item/cart-item.vue'
 import { mapGetters, mapActions } from 'vuex'
 export default {
+  components: {
+    SearchForm,
+    Counts,
+    GoodItem,
+    Modals,
+    CartItem
+  },
   data () {
     return {
-      likesMap: new Map(),
       likes: [],
       cartGoods: [],
       cartMap: new Map(),
@@ -201,7 +189,6 @@ export default {
 @import "./assets/style/components/header"
 @import "./assets/style/components/btn"
 @import "./assets/style/components/cart"
-@import "./assets/style/components/message"
 
 @import "./assets/style/animation/animation"
 </style>

@@ -43,10 +43,10 @@
       <li
         class="c-goods-buttons__item">
         <a
-          :class="{'is-active': like}"
+          :class="{'is-active': isLike}"
           href="#"
           class="c-heart"
-          @click.prevent="$emit('click-like', good.id, like = !like)"
+          @click.prevent="setLikeId(good.id)"
         />
       </li>
       <li class="c-goods-buttons__item">
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'GoodItem',
   props: {
@@ -72,9 +73,21 @@ export default {
   },
   data () {
     return {
-      like: false,
       countBuy: 0
     }
+  },
+  computed: {
+    ...mapGetters({
+      likes: 'goods/likes'
+    }),
+    isLike () {
+      return this.likes.find(obj => obj.id === this.good.id)
+    }
+  },
+  methods: {
+    ...mapActions({
+      setLikeId: 'goods/setLikeId'
+    })
   }
 }
 </script>

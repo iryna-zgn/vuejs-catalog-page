@@ -5,8 +5,7 @@
         <input
           v-model="search"
           type="text"
-          placeholder="Search"
-          @keyup="$emit('type-search', search)">
+          placeholder="Search">
       </div>
     </form>
     <span class="c-search__icon icon-search"/>

@@ -3,7 +3,9 @@ export default {
   namespaced: true,
   state: {
     allGoods: [],
-    searchKeyword: ''
+    searchKeyword: '',
+    likesMap: new Map(),
+    likes: []
   },
   actions: {
     loadGoods ({commit}) {
@@ -12,7 +14,11 @@ export default {
         xobj.overrideMimeType('application/json')
         xobj.open('GET', '/src/goods.json', true)
         xobj.onreadystatechange = function () {
-          if (xobj.readyState == 4 && xobj.status == '200') {
+          if (
+            /* eslint-disable */
+            xobj.readyState == 4 && xobj.status == '200'
+            /* eslint-enable */
+          ) {
             callback(xobj.responseText)
           }
         }
@@ -24,6 +30,9 @@ export default {
     },
     setSearchKeyword ({commit}, str) {
       commit(types.SET_SEARCH_KEYWORD, str)
+    },
+    setLikeId ({commit}, id) {
+      commit(types.WISHLIST_MAP, id)
     }
   },
   getters: {
@@ -31,6 +40,9 @@ export default {
       return state.allGoods.filter(good =>
         good.title.toLowerCase().match(state.searchKeyword.toLowerCase())
       )
+    },
+    likes (state, id) {
+      return state.likes
     }
   },
   mutations: {
@@ -48,6 +60,16 @@ export default {
     },
     [types.SET_SEARCH_KEYWORD] (state, str) {
       state.searchKeyword = str
+    },
+    [types.WISHLIST_MAP] (state, id) {
+      let m = state.likesMap
+      const item = state.allGoods.find(obj => obj.id === id)
+      if (!m.has(id)) {
+        m.set(id, item)
+      } else {
+        m.delete(id)
+      }
+      state.likes = [...m.values()]
     }
   }
 }

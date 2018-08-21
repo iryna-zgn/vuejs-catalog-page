@@ -8,8 +8,8 @@
         :icon-heart="true"
       />
       <span
-        v-if="likesCount">
-        {{ likesCount }}
+        v-if="likes.length > 0">
+        {{ likes.length }}
       </span>
     </div>
     <div
@@ -28,20 +28,22 @@
 
 <script>
 import Icon from '../../ui/icon/icon'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Counts',
   components: {
     Icon
   },
   props: {
-    likesCount: {
-      type: Number,
-      default: 0
-    },
     goodsCount: {
       type: Number,
       default: 0
     }
+  },
+  computed: {
+    ...mapGetters({
+      likes: 'goods/likes'
+    })
   },
   methods: {
     showLikesModal () {
