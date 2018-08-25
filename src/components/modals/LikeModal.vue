@@ -27,7 +27,7 @@ import Modal from '../../ui/modal/modal.vue'
 import WishlistItem from '../../components/wishlist-item/WishlistItem'
 import { mapGetters } from 'vuex'
 export default {
-  name: 'Modals',
+  name: 'LikeModal',
   components: {
     Modal,
     WishlistItem

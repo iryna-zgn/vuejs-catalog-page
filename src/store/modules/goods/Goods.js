@@ -5,7 +5,11 @@ export default {
     allGoods: [],
     searchKeyword: '',
     likesMap: new Map(),
-    likes: []
+    likes: [],
+    cartMap: new Map(),
+    cartGoods: [],
+    goodsCount: 0,
+    totalSum: 0
   },
   actions: {
     loadGoods ({commit}) {
@@ -33,6 +37,31 @@ export default {
     },
     setLikeId ({commit}, id) {
       commit(types.WISHLIST_MAP, id)
+    },
+    setCartGoodId ({commit}, id) {
+      commit(types.CART_GOODS_MAP, id)
+    },
+    setDeleteId ({commit}, id) {
+      commit(types.DELETE_CART_GOODS, id)
+    },
+    setRecalculateInfo ({state, commit}, info) {
+      const id = info[0]
+      const sign = info[1]
+      let m = state.cartMap
+      let item = m.get(id)
+      if (sign === 'minus') {
+        item.count--
+        state.goodsCount--
+        state.totalSum -= Number(item.price)
+        if (item.count === 0) {
+          commit(types.DELETE_CART_GOODS, id)
+        }
+      } else {
+        item.count++
+        state.goodsCount++
+        state.totalSum += Number(item.price)
+      }
+      state.cartGoods = [...m.values()]
     }
   },
   getters: {
@@ -43,6 +72,15 @@ export default {
     },
     likes (state, id) {
       return state.likes
+    },
+    cartGoods (state, id) {
+      return state.cartGoods
+    },
+    goodsCount (state) {
+      return state.goodsCount
+    },
+    totalSum (state) {
+      return state.totalSum
     }
   },
   mutations: {
@@ -70,6 +108,37 @@ export default {
         m.delete(id)
       }
       state.likes = [...m.values()]
+    },
+    [types.CART_GOODS_MAP] (state, id) {
+      let m = state.cartMap
+      let item = state.allGoods.find(obj => obj.id === id)
+
+      if (m.has(id)) {
+        m.get(id).count++
+      } else {
+        item.count = 1
+        m.set(id, item)
+      }
+      state.cartGoods = [...m.values()]
+
+      let itemsCount = 0
+      let totalPrice = 0
+      for (let item of m.values()) {
+        itemsCount += item.count
+        totalPrice += item.count * item.price
+      }
+      state.goodsCount = itemsCount
+      state.totalSum = totalPrice
+    },
+    [types.DELETE_CART_GOODS] (state, id) {
+      let m = state.cartMap
+      let item = m.get(id)
+
+      state.totalSum -= item.count * item.price
+      state.goodsCount -= item.count
+
+      m.delete(id)
+      state.cartGoods = [...m.values()]
     }
   }
 }

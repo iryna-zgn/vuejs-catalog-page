@@ -53,7 +53,7 @@
         <a
           href="#"
           class="c-btn"
-          @click.prevent="$emit('click-buy', good.id)">
+          @click.prevent="setCartGoodId(good.id)">
           Buy
         </a>
       </li>
@@ -71,22 +71,21 @@ export default {
       default: _ => {}
     }
   },
-  data () {
-    return {
-      countBuy: 0
-    }
-  },
   computed: {
     ...mapGetters({
-      likes: 'goods/likes'
+      likes: 'goods/likes',
+      cartGoods: 'goods/cartGoods'
     }),
     isLike () {
-      return this.likes.find(obj => obj.id === this.good.id)
+      if (this.likes.find(obj => obj.id === this.good.id)) {
+        return true
+      }
     }
   },
   methods: {
     ...mapActions({
-      setLikeId: 'goods/setLikeId'
+      setLikeId: 'goods/setLikeId',
+      setCartGoodId: 'goods/setCartGoodId'
     })
   }
 }

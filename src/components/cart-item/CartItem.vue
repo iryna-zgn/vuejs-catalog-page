@@ -26,7 +26,7 @@
         <a
           href="#"
           class="c-spinner__btn"
-          @click.prevent="$emit('click-change-count', 'minus', good.id)">
+          @click="setRecalculateInfo([good.id, 'minus'])">
           -
         </a>
         <span
@@ -36,7 +36,7 @@
         <a
           href="#"
           class="c-spinner__btn"
-          @click.prevent="$emit('click-change-count', 'plus', good.id)">
+          @click="setRecalculateInfo([good.id, 'plus'])">
           +
         </a>
       </div>
@@ -58,13 +58,14 @@
     </div>
     <div
       class="c-cart-item__remove"
-      @click="$emit('click-remove', good.id)">
+      @click="setDeleteId(good.id)">
       &times;
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'CartItem',
   props: {
@@ -76,6 +77,12 @@ export default {
       type: Number,
       default: 0
     }
+  },
+  methods: {
+    ...mapActions({
+      setDeleteId: 'goods/setDeleteId',
+      setRecalculateInfo: 'goods/setRecalculateInfo'
+    })
   }
 }
 </script>

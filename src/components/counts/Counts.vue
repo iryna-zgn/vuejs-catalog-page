@@ -19,7 +19,7 @@
         :icon-cart="true"
       />
       <span
-        v-if="goodsCount">
+        v-if="goodsCount > 0">
         {{ goodsCount }}
       </span>
     </div>
@@ -34,15 +34,10 @@ export default {
   components: {
     Icon
   },
-  props: {
-    goodsCount: {
-      type: Number,
-      default: 0
-    }
-  },
   computed: {
     ...mapGetters({
-      likes: 'goods/likes'
+      likes: 'goods/likes',
+      goodsCount: 'goods/goodsCount'
     })
   },
   methods: {
