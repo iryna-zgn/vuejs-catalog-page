@@ -2,7 +2,7 @@
   "name": "catalog",
   "description": "A Vue.js project",
   "version": "1.0.0",
-  "author": "dmytruk <iryna.zgn@gmail.com>",
+  "author": "iryna",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -21,12 +21,20 @@
   ],
   "devDependencies": {
     "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
     "eslint": "^4.15.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-vue": "^4.0.0",
     "file-loader": "^1.1.4",
     "node-sass": "^4.5.3",
@@ -34,14 +42,6 @@
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
     "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.9.1",
-    "babel-eslint": "^8.2.1",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-friendly-formatter": "^3.0.0",
-    "eslint-loader": "^1.7.1",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-node": "^5.2.0",
-    "eslint-plugin-promise": "^3.4.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "webpack-dev-server": "^2.9.1"
   }
 }
